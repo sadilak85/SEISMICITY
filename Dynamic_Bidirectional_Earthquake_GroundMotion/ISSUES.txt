@@ -1,0 +1,3 @@
+aFloorWeight  komple katin agirligi ama orjinalde sadece bir yönlü (Beam yönü) - Pushover analizin icdünyasiyla alakali
+
+ilk column elementi de input al 
