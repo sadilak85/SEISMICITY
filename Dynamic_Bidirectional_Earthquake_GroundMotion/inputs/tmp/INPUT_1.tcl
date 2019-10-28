@@ -1,18 +1,20 @@
-#BUILDING_ID 1
-#NODES
+#BUILDING ID 1
+#GROUND
 node 10000101	0.0	0.0	0.0
-node 10001111	0.0	50.0	0.0
 node 10000102	288.0	0.0	0.0
 node 10000201	0.0	0.0	288.0
 node 10000202	288.0	0.0	288.0
+#FLOOR #1
 node 20000101	0.0	168.0	0.0
 node 20000102	288.0	168.0	0.0
 node 20000201	0.0	168.0	288.0
 node 20000202	288.0	168.0	288.0
+#FLOOR #2
 node 30000101	0.0	336.0	0.0
 node 30000102	288.0	336.0	0.0
 node 30000201	0.0	336.0	288.0
 node 30000202	288.0	336.0	288.0
+#FLOOR #3
 node 40000101	0.0	504.0	0.0
 node 40000102	288.0	504.0	0.0
 node 40000201	0.0	504.0	288.0
@@ -54,8 +56,7 @@ set Beamlength_330030102 288
 set Beamlength_340040101 288
 set Beamlength_340040102 288
 #COLUMN
-element nonlinearBeamColumn 110020100	10000101	10001111 5 1 1
-element nonlinearBeamColumn 110021111	10001111	20000101 5 1 1
+element nonlinearBeamColumn 110020100	10000101	20000101 5 1 1
 element nonlinearBeamColumn 110020101	10000102	20000102 5 1 1
 element nonlinearBeamColumn 110020200	10000201	20000201 5 1 1
 element nonlinearBeamColumn 110020201	10000202	20000202 5 1 1
@@ -72,4 +73,12 @@ set Columnlength_110020100 168
 set Columnlength_110020101 168
 set Columnlength_110020200 168
 set Columnlength_110020201 168
+set Columnlength_120030100 168
+set Columnlength_120030101 168
+set Columnlength_120030200 168
+set Columnlength_120030201 168
+set Columnlength_130040100 168
+set Columnlength_130040101 168
+set Columnlength_130040200 168
+set Columnlength_130040201 168
 #END
