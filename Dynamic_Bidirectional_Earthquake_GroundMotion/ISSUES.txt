@@ -1,3 +1,16 @@
-aFloorWeight  komple katin agirligi ama orjinalde sadece bir yönlü (Beam yönü) - Pushover analizin icdünyasiyla alakali
+first column id olayini hallet onu inputtan mi bi yerden alsin
+
+
+nbay nbayz i dogru al 
 
 ilk column elementi de input al 
+
+beam ve gridler ortak beam olabilir mi 
+
+aralarinda hep 90 derece aci mi olmak zorunda
+
+grid ve beam leri node ide den degil de sirali olacak sekilde alma? veya önay o sekilde yapsin
+
+pounding icin ek noktalar koyma olayi, yani bir beam i ikiye bol ve bak oluyorsa ayni sonuc genelle ve ek noktalarla pounding
+
+assagidaki ilk columnlari da ayni length farzettik, en azindan onlarin average length ini düsünebilirsin, suan kod tüm kadlarda ilk elemani standart length farzediyo

@@ -14,6 +14,7 @@
 variable constraintsTypeDynamic Transformation;
 constraints $constraintsTypeDynamic ; 
 
+
 # DOF NUMBERER (number the degrees of freedom in the domain): (http://opensees.berkeley.edu/OpenSees/manuals/usermanual/366.htm)
 #   determines the mapping between equation numbers and degrees-of-freedom
 #          Plain -- Uses the numbering provided by the user 
