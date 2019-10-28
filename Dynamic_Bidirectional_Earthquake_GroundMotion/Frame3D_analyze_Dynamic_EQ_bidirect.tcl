@@ -15,24 +15,13 @@ set iGMdirection "1 3";			# ground-motion direction
 set iGMfact "1.5 0.75";			# ground-motion scaling factor
 set dtInput 0.00500 ;		    # DT
 
-# define GEOMETRY -------------------------------------------------------------
-# define structure-geometry paramters
-set LCol 168;		# column height (parallel to Y axis)	.... set this variable as array and take it from input file
-set LBeam 288;		# beam length (parallel to X axis)		.... set this variable as array "
-set LGird 288;		# girder length (parallel to Z axis)    .... set this variable as array "
-
 # initialize variables for each building as list variables 
-set NBay ""
-set NBayZ ""
-set NStory ""
 set NFrame ""
 set FreeNodeID ""
 set iFPush "";			#lateral load for pushover
-set iMasterNode ""
 set iNodePush "";		# nodes for pushover/cyclic, vectorized
 set iSupportNode ""
 set MassTotal ""
-set aFloorWeight ""
 
 # SET UP ----------------------------------------------------------------------------
 wipe;				# clear memory of all past model definitions
@@ -47,7 +36,7 @@ source BuildRCrectSection.tcl;		# procedure for definining RC fiber section
 
 set Dlevel 10000;	# numbering increment for new-level nodes
 set Dframe 100;	# numbering increment for new-frame nodes
-set FirstColumn 110020100;							# ID: first column assuming it starts with 1   ????????????????????????????????????
+set FirstColumn 20100;							# ID: first column assuming it starts with 1   ????????????????????????????????????
 # Define SECTIONS -------------------------------------------------------------
 set SectionType FiberSection;		# options: Elastic FiberSection
 
@@ -62,6 +51,8 @@ set ColSecTagFiber 4
 set BeamSecTagFiber 5
 set GirdSecTagFiber 6
 set SecTagTorsion 70
+# ---------------------- Define SECTIONs --------------------------------
+source SectionProperties.tcl
 
 # define ELEMENTS tags
 # set up geometric transformations of element
@@ -74,23 +65,6 @@ set ColTransfType Linear ;		# options for columns: Linear PDelta  Corotational
 geomTransf $ColTransfType  $IDColTransf  0 0 1;			# orientation of column stiffness affects bidirectional response.
 geomTransf Linear $IDBeamTransf 0 0 1
 geomTransf Linear $IDGirdTransf 1 0 0
-# ---------------------- Define SECTIONs --------------------------------
-source Section.tcl
-
-# --------------------------------------------------------------------------------------------------------------------------------
-# Define GRAVITY LOADS, weight and masses
-# calculate dead load of frame, assume this to be an internal frame (do LL in a similar manner)
-# calculate distributed weight along the beam length
-#set GammaConcrete [expr 150*$pcf];   		# Reinforced-Concrete floor slabs, defined above
-set Tslab [expr 6*$in];			# 6-inch slab
-set Lslab [expr $LGird/2]; 			# slab extends a distance of $LGird/2 in/out of plane
-set DLfactor 1.0;				# scale dead load up a little
-set Qslab [expr $GammaConcrete*$Tslab*$Lslab*$DLfactor]; 
-set QdlBeam [expr $Qslab + $QBeam]; 	# dead load distributed along beam (one-way slab)
-set QdlGird $QGird; 			# dead load distributed along girder
-set WeightCol [expr $QdlCol*$LCol];  		# total Column weight
-set WeightBeam [expr $QdlBeam*$LBeam]; 	# total Beam weight
-set WeightGird [expr $QdlGird*$LGird]; 	# total Gird weight
 
 # ---------------------   INPUT DATA from FILE  -----------------------------------------------------
 set inputFilename "inputs/INPUT_"
@@ -99,34 +73,87 @@ set FileExt ".tcl"
 
 set Buildingnum 0; # initialize the total number of buildings
 set ainputFilename ""
-#source split_inputFiles.tcl
-source split_inputFileNames.tcl
 
+source split_inputFileNames.tcl; # take file names, define number of buildings and take the building IDs
+
+# ---------------------   CREATE THE MODEL  -----------------------------------------------------
 for {set numInFile 0} {$numInFile <= [expr $Buildingnum-1]} {incr numInFile 1} {
- source Build_Model.tcl ;  #loop for inputing many building parameters
+ source Frame3D_Build_RC.tcl ;  			#inputing many building parameters
+ source LoadWeightGravity.tcl; 		#Gravity, Nodal Weights, Lateral Loads, Masses
 }
+#source attach_buildings.tcl
+puts "Model Built"
+#
+#
+# ------------   Eigenvalue analysis  -------------------------------------------------------
+set numModes 3
+set lambda [eigen  $numModes];
+
+# calculate frequencies and periods of the structure ---------------------------------------------------
+set omega {}
+set f {}
+set T {}
+set pi 3.141593
+
+foreach lam $lambda {
+	lappend omega [expr sqrt($lam)]
+	lappend f [expr sqrt($lam)/(2*$pi)]
+	lappend T [expr (2*$pi)/sqrt($lam)]
+}
+
+puts "periods are $T"
+# ---------------------   CREATE OUTPUT FILES  -----------------------------------------------------
+for {set numInFile 0} {$numInFile <= [expr $Buildingnum-1]} {incr numInFile 1} {
+	source Recorder_outputs.tcl
+}
+# Define DISPLAY -------------------------------------------------------------
+DisplayModel3D DeformedShape ;	 # options: DeformedShape NodeNumbers ModeShape
 
 # ###################
 # GRAVITY -------------------------------------------------------------
 # define GRAVITY load applied to beams and columns -- eleLoad applies loads in local coordinate axis
+
 pattern Plain 101 Linear {
-	for {set i 0} {$i <= [expr [llength $elidcolumn]-1]} {incr i 1} {
-		eleLoad -ele [lindex $elidcolumn $i] -type -beamUniform 0. 0. -$QdlCol; 	# COLUMNS
+for {set numInFile 0} {$numInFile <= [expr $Buildingnum-1]} {incr numInFile 1} {
+	for {set i 0} {$i <= [expr [llength [lindex $LCol $numInFile]]-1]} {incr i 1} {
+		eleLoad -ele [lindex $LCol $numInFile $i 0] -type -beamUniform 0. 0. -$QdlCol; 	# COLUMNS
 	}
-	for {set i 0} {$i <= [expr [llength $elidbeam]-1]} {incr i 1} {
-		eleLoad -ele [lindex $elidbeam $i]  -type -beamUniform -$QdlBeam 0.; 	# BEAMS
+	for {set i 0} {$i <= [expr [llength [lindex $LBeam $numInFile]]-1]} {incr i 1} {
+		eleLoad -ele [lindex $LBeam $numInFile $i 0]  -type -beamUniform -[lindex $QdlBeam $numInFile $i 1] 0.; 	# BEAMS
 	}
-	for {set i 0} {$i <= [expr [llength $elidgird]-1]} {incr i 1} {
-		eleLoad -ele [lindex $elidgird $i]  -type -beamUniform -$QdlGird 0.;	# GIRDS
+	for {set i 0} {$i <= [expr [llength [lindex $LGird $numInFile]]-1]} {incr i 1} {
+		eleLoad -ele [lindex $LGird $numInFile $i 0]  -type -beamUniform -$QdlGird 0.;	# GIRDS
 	}
+}
 }; # Pattern plain 101 linear close 
-# Define DISPLAY -------------------------------------------------------------
-DisplayModel3D DeformedShape ;	 # options: DeformedShape NodeNumbers ModeShape
 
-source Frame3D_build_RCsec.tcl
 
-source attach_buildings.tcl
-	
+puts goGravity
+# Gravity-analysis parameters -- load-controlled static analysis
+set Tol 1.0e-8;			# convergence tolerance for test
+variable constraintsTypeGravity Plain;		# default;
+if {  [info exists RigidDiaphragm] == 1} {
+	if {$RigidDiaphragm=="ON"} {
+		variable constraintsTypeGravity Lagrange;	#  large model: try Transformation
+	};	# if rigid diaphragm is on
+};	# if rigid diaphragm exists
+constraints $constraintsTypeGravity ;     		# how it handles boundary conditions
+numberer RCM;			# renumber dof's to minimize band-width (optimization), if you want to
+system BandGeneral ;		# how to store and solve the system of equations in the analysis (large model: try UmfPack)
+test EnergyIncr $Tol 6 ; 		# determine if convergence has been achieved at the end of an iteration step
+algorithm Newton;			# use Newton's solution algorithm: updates tangent stiffness at every iteration
+set NstepGravity 10;  		# apply gravity in 10 steps
+set DGravity [expr 1./$NstepGravity]; 	# first load increment;
+integrator LoadControl $DGravity;	# determine the next time step for an analysis
+analysis Static;			# define type of analysis static or transient
+analyze $NstepGravity;		# apply gravity
+
+# ------------------------------------------------- maintain constant gravity loads and reset time to zero
+loadConst -time 0.0
+
+# -------------------------------------------------------------
+#
+#
 # Define DISPLAY -------------------------------------------------------------
 # the deformed shape is defined in the build file
 recorder plot $dataDir/DFree$_aBID.out DisplDOF[lindex $iGMdirection 0] 1100 10 400 400 -columns  1 [expr 1+[lindex $iGMdirection 0]] ; # a window to plot the nodal displacements versus time
@@ -134,13 +161,11 @@ recorder plot $dataDir/DFree$_aBID.out DisplDOF[lindex $iGMdirection 1] 1100 410
 
 # set up ground-motion-analysis parameters
 set DtAnalysis	[expr 0.01*$sec];	# time-step Dt for lateral analysis
-set TmaxAnalysis	[expr 15. *$sec];	# maximum duration of ground-motion analysis -- should be 50*$sec
+set TmaxAnalysis	[expr 10. *$sec];	# maximum duration of ground-motion analysis -- should be 50*$sec
 
 
 # ----------- set up analysis parameters
 source LibAnalysisDynamicParameters.tcl;	# constraintsHandler,DOFnumberer,system-ofequations,convergenceTest,solutionAlgorithm,integrator
-
-#constraints Penalty 1.0e5 1.0e5;
 
 # ------------ define & apply damping
 # RAYLEIGH damping parameters, Where to put M/K-prop damping, switches (http://opensees.berkeley.edu/OpenSees/manuals/usermanual/1099.htm)

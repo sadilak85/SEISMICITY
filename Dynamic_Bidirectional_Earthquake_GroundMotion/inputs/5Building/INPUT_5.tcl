@@ -1,13 +1,15 @@
-#BUILDING_ID 5
-#NODES
+#BUILDING ID 1
+#GROUND
 node 10000151	1200.0	0.0	0.0
 node 10000152	1488.0	0.0	0.0
 node 10000251	1200.0	0.0	288.0
 node 10000252	1488.0	0.0	288.0
+#FLOOR #1
 node 20000151	1200.0	168.0	0.0
 node 20000152	1488.0	168.0	0.0
 node 20000251	1200.0	168.0	288.0
 node 20000252	1488.0	168.0	288.0
+#FLOOR #2
 node 30000151	1200.0	336.0	0.0
 node 30000152	1488.0	336.0	0.0
 node 30000251	1200.0	336.0	288.0
@@ -24,20 +26,20 @@ element nonlinearBeamColumn 220020251	20000251	20000252 5 2 2
 element nonlinearBeamColumn 230030151	30000151	30000152 5 2 2
 element nonlinearBeamColumn 230030251	30000251	30000252 5 2 2
 #BEAMLENGTH
-set Beamlength_220020101 288
-set Beamlength_220020201 288
-set Beamlength_230030101 288
-set Beamlength_230030201 288	
+set Beamlength_220020151 288
+set Beamlength_220020251 288
+set Beamlength_230030151 288
+set Beamlength_230030251 288	
 #GIRDER
 element nonlinearBeamColumn 320020151	20000151	20000251 5 3 3
 element nonlinearBeamColumn 320020152	20000152	20000252 5 3 3
 element nonlinearBeamColumn 330030151	30000151	30000251 5 3 3
 element nonlinearBeamColumn 330030152	30000152	30000252 5 3 3
 #GIRDERLENGTH
-set Beamlength_320020101 288
-set Beamlength_320020102 288
-set Beamlength_330030101 288
-set Beamlength_330030102 288
+set Beamlength_320020151 288
+set Beamlength_320020152 288
+set Beamlength_330030151 288
+set Beamlength_330030152 288
 #COLUMN
 element nonlinearBeamColumn 110020150	10000151	20000151 5 1 1
 element nonlinearBeamColumn 110020151	10000152	20000152 5 1 1
@@ -48,8 +50,12 @@ element nonlinearBeamColumn 120030151	20000152	30000152 5 1 1
 element nonlinearBeamColumn 120030250	20000251	30000251 5 1 1
 element nonlinearBeamColumn 120030251	20000252	30000252 5 1 1
 #COLUMNLENGTH
-set Columnlength_110020100 168
-set Columnlength_110020101 168
-set Columnlength_110020200 168
-set Columnlength_110020201 168
+set Columnlength_110020150 168
+set Columnlength_110020151 168
+set Columnlength_110020250 168
+set Columnlength_110020251 168
+set Columnlength_120030150 168
+set Columnlength_120030151 168
+set Columnlength_120030250 168
+set Columnlength_120030251 168
 #END
