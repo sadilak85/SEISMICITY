@@ -16,3 +16,5 @@ Slab leri en genel yoldan nasil verebiliriz, concave, acili köseli binalarda sl
 
 
 pushover icin iFloor hatali o bölgeye bir daha bak komple slab vs ile beraber düsün
+
+unitler en son SI cevrilecek 
