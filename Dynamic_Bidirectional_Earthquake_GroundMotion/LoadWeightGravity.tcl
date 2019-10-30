@@ -26,50 +26,52 @@ set QdlGird $QGird; 			# dead load distributed along girder
 	set Lslabtmp ""
 	set Lslabtmp2 ""
 	set Qslabtmp ""
-	set Qslabtmp2 ""
-	set QdlBeamtmp ""
-	set QdlBeamtmp2 ""
 	lappend WeightGirdtmp 0
 	lappend WeightGirdtmp 0
 	lappend Lslabtmp 0
 	lappend Lslabtmp 0
 	lappend Qslabtmp 0
 	lappend Qslabtmp 0
-	lappend QdlBeamtmp 0
-	lappend QdlBeamtmp 0
 	
 	for {set i 0} {$i <= [expr [llength [lindex $LGird $numInFile]]-1]} {incr i 1} {
 		lappend WeightGirdtmp2 $WeightGirdtmp
 		lappend Lslabtmp2 $Lslabtmp
-		lappend Qslabtmp2 $Qslabtmp
-		lappend QdlBeamtmp2 $QdlBeamtmp
 	}
 	lappend WeightGird $WeightGirdtmp2
 	lappend Lslab $Lslabtmp2
-	lappend Qslab $Qslabtmp2
-	lappend QdlBeam $QdlBeamtmp2
+
+#exteriorBeamnodesID   exteriorGirdernodesID
+
 	for {set i 0} {$i <= [expr [llength [lindex $LGird $numInFile]]-1]} {incr i 1} {
 		 lset WeightGird $numInFile  $i 1 [expr $QdlGird*[lindex $LGird $numInFile $i 1]];    # total Gird weight
 		 lset Lslab $numInFile  $i 1 [expr [lindex $LGird $numInFile $i 1]/2]; 			# slab extends a distance of $LGird/2 in/out of plane
-		 lset Qslab $numInFile  $i 1 [expr $GammaConcrete*$Tslab*[lindex $Lslab $numInFile  $i 1]*$DLfactor]; 			# slab extends a distance of $LGird/2 in/out of plane
-		 lset QdlBeam $numInFile  $i 1 [expr [lindex $Qslab $numInFile  $i 1] + $QBeam]; 	# dead load distributed along beam (one-way slab)
+		 set Qslab [expr $GammaConcrete*$Tslab*[lindex $Lslab $numInFile  $i 1]*$DLfactor]; # ??????????????????????????????
 		 lset WeightGird $numInFile  $i 0 [lindex $LGird $numInFile $i 0]
 		 lset Lslab $numInFile  $i 0 [lindex $LGird $numInFile $i 0]
-		 lset Qslab $numInFile  $i 0 [lindex $LGird $numInFile $i 0]
-		 lset QdlBeam $numInFile  $i 0 [lindex $LGird $numInFile $i 0]
 	}
+
 	set WeightBeamtmp ""
 	set WeightBeamtmp2 ""
+	set QdlBeamtmp2 ""
+	set QdlBeamtmp ""
+	lappend QdlBeamtmp 0
+	lappend QdlBeamtmp 0
 	lappend WeightBeamtmp 0
 	lappend WeightBeamtmp 0
 	for {set i 0} {$i <= [expr [llength [lindex $LBeam $numInFile]]-1]} {incr i 1} {
 		lappend WeightBeamtmp2 $WeightBeamtmp
+		lappend QdlBeamtmp2 $QdlBeamtmp
 	}
+	lappend QdlBeam $QdlBeamtmp2
 	lappend WeightBeam $WeightBeamtmp2
 	for {set i 0} {$i <= [expr [llength [lindex $LBeam $numInFile]]-1]} {incr i 1} {
+		 lset QdlBeam $numInFile  $i 1 [expr $Qslab + $QBeam]; 	# dead load distributed along beam (one-way slab)
+		 lset QdlBeam $numInFile  $i 0 [lindex $LBeam $numInFile $i 0]
 		 lset WeightBeam $numInFile $i 1 [expr [lindex $QdlBeam $numInFile $i 1]*[lindex $LBeam $numInFile $i 1]];    # total Beam weight
 		 lset WeightBeam $numInFile $i 0 [lindex $LBeam $numInFile $i 0]
 	}
+
+	
 # 
 # assign masses to the nodes that the columns are connected to 
 # each connection takes the mass of 1/2 of each element framing into it (mass=weight/$g)
@@ -193,7 +195,7 @@ for {set i 1} {$i <= [lindex $NStory $numInFile 0]} {incr i 1} {
 	
 	
 for {set i 1} {$i <= [lindex $NStory $numInFile 0]} {incr i 1} {
-	lset iFloorWeight $numInFile [expr $i-1] [expr  [lindex $aFloorWeight $numInFile [expr $i-1]]/[lindex $NFrame $numInFile]]
+	lset iFloorWeight $numInFile [expr $i-1] [expr  [lindex $aFloorWeight $numInFile [expr $i-1]]/[lindex $NFrame $numInFile [expr $i-1]]]
 }
 
 set atmp ""
@@ -221,7 +223,9 @@ lset sumWiHi $numInFile 1 $sumWiHitmp; 	# sum of storey weight times height, for
 # LATERAL-LOAD distribution for static pushover analysis
 # calculate distribution of lateral load based on mass/weight distributions along building height
 # Fj = WjHj/sum(WiHi)  * Weight   at each floor j
-
+# initialize variables for each building as list variables 
+set iFPush "";			#lateral load for pushover
+set iNodePush "";		# nodes for pushover/cyclic, vectorized
 set iFjtmp ""
 for {set i 1} {$i <= [lindex $NStory $numInFile 0]} {incr i 1} {
 	lappend iFjtmp 0
@@ -242,7 +246,8 @@ puts sumWiHi:$sumWiHi
 puts iFloorWeight:$iFloorWeight
 puts aFloorWeight:$aFloorWeight
 puts FloorHeight$FloorHeight
-puts $iFj
+puts FloorWeight$FloorWeight
+puts iFj$iFj
 puts iFPush$iFPush
 #
 #

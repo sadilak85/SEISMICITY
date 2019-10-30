@@ -1,8 +1,3 @@
-first column id olayini hallet onu inputtan mi bi yerden alsin
-
-
-nbay nbayz i dogru al 
-
 ilk column elementi de input al 
 
 beam ve gridler ortak beam olabilir mi 
@@ -13,4 +8,11 @@ grid ve beam leri node ide den degil de sirali olacak sekilde alma? veya önay o
 
 pounding icin ek noktalar koyma olayi, yani bir beam i ikiye bol ve bak oluyorsa ayni sonuc genelle ve ek noktalarla pounding
 
-assagidaki ilk columnlari da ayni length farzettik, en azindan onlarin average length ini düsünebilirsin, suan kod tüm kadlarda ilk elemani standart length farzediyo
+assagidaki ilk columnlari da ayni length farzettik, en azindan onlarin average length ini düsünebilirsin, 
+suan kod tüm kadlarda ilk elemani standart length farzediyo
+
+
+Slab leri en genel yoldan nasil verebiliriz, concave, acili köseli binalarda slab leri generic almak sakincali.. yüzey alanindan bi formul?
+
+
+pushover icin iFloor hatali o bölgeye bir daha bak komple slab vs ile beraber düsün

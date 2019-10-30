@@ -15,14 +15,6 @@ set iGMdirection "1 3";			# ground-motion direction
 set iGMfact "1.5 0.75";			# ground-motion scaling factor
 set dtInput 0.00500 ;		    # DT
 
-# initialize variables for each building as list variables 
-set NFrame ""
-set FreeNodeID ""
-set iFPush "";			#lateral load for pushover
-set iNodePush "";		# nodes for pushover/cyclic, vectorized
-set iSupportNode ""
-set MassTotal ""
-
 # SET UP ----------------------------------------------------------------------------
 wipe;				# clear memory of all past model definitions
 model BasicBuilder -ndm 3 -ndf 6;	# Define the model builder, ndm=#dimension, ndf=#dofs

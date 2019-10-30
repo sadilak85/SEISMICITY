@@ -109,50 +109,6 @@ set NStorytmp 0
 	lappend NStory $NStorytmp
 	close $inFileID
 	}
-	
-# ------------------------  Number of BAYs ------------------------------------------------------
-	if [catch {open [lindex $ainputFilename $numInFile 0] r} inFileID] {
-		puts stderr "Cannot open input file for reading number of BAYs"
-	} else {
-	set flag 1
-	set NBaytmp 1;	#min number of Bays in X direction
-	set NBayZtmp 1;
-	foreach line [split [read $inFileID] \n] {
-		if {[llength $line] == 0} {
-			# Blank line --> do nothing
-			continue
-		} 
-		if {$flag == 1} {
-			foreach word [split $line] {
-				if {[string match $word "#MASTERNODES"] == 1} {
-					set flag 0
-					break
-				}
-				if {[string match $word "#BUILDING"] == 1} {
-					break
-				}
-				if {[string match $word "#GROUND"] == 1 || [string match $word "#FLOOR"] == 1} {
-					break
-				} else {
-					set list [regexp -all -inline -- {[-+]?[0-9]*\.?[0-9]+} $line]
-					foreach word [split $list] {
-						if {$NBaytmp < [expr 1+[string index $word 1]]} {
-							set NBaytmp [expr 1+[string index $word 1]] ;		#NBAY		# number of bays in X direction
-						}
-						if {$NBayZtmp < [expr 1+[string index $word 2]]} {
-							set NBayZtmp [expr 1+[string index $word 2]] ;		#NBAYZ		# number of bays in Z direction
-						}
-						break
-					}
-				}
-			}
-		}
-	}
-	lappend NBay $NBaytmp
-	lappend NBayZ $NBayZtmp
-	close $inFileID
-	}
-	lappend NFrame [expr $NBayZtmp + 1];	# actually deal with frames in Z direction, as this is an easy extension of the 2d model
 
 # ------------------------  Free Node ID for OUTPUT ------------------------------------------------------
 	if [catch {open [lindex $ainputFilename $numInFile 0] r} inFileID] {
@@ -473,8 +429,130 @@ set NStorytmp 0
       close $inFileID
    }
    lappend elidgirdnodes $elidgirdnodestmp
+
+# ------------------------  Exterior Node IDs  ------------------------------------------------------
+if [catch {open [lindex $ainputFilename $numInFile 0] r} inFileID] {
+	puts stderr "Cannot open input file for reading nodal weights"
+} else {
+  set flag 1
+	set floorcounter 0
+	set nodecounttmp 0
+	set exteriornodes ""
+	set nodecount ""
+	foreach line [split [read $inFileID] \n] {
+		if {[llength $line] == 0} {
+			# Blank line --> do nothing
+			continue
+		} 
+		if {$flag == 1} {
+			foreach word [split $line] {
+				if {[string match $word "#BUILDING"] == 1} {
+					break
+				}
+				if {[string match $word "#GROUND"] == 1} {
+					set flag2 1
+					break
+				}
+				if {[string match $word "#FLOOR"] == 1 || [string match $word "#MASTERNODES"] == 1} {
+					set flag2 0
+					if {$floorcounter>0} {
+						lappend exteriornodes $iexteriornodestmp
+						lappend nodecount $nodecounttmp
+						set iexteriornodestmp ""
+						set nodecounttmp 0
+					}
+					set floorcounter [expr $floorcounter+1]
+					
+					if {[string match $word "#MASTERNODES"] == 1} {
+						set flag2 1
+					} 
+					break
+				} else {
+				  if {$flag2 == 0} {
+					set list [regexp -all -inline -- {[-+]?[0-9]*\.?[0-9]+} $line]
+					foreach word [split $list] {
+						lappend iexteriornodestmp $list
+						set nodecounttmp [expr $nodecounttmp+1]
+						break
+					}
+					break
+				  }
+				}
+			}; #end of split line 
+		}
+	}; #end of line read 
+	close $inFileID
+	}
+	lappend iexteriornodes $exteriornodes; # outermost nodes per floor each building
+	
+set exteriorGirdernodesID ""
+set exteriornodesID ""
+set exteriorGirdernodesID ""
+set exteriorBeamnodesID ""	
+set aNBayZ ""
+set aNFrame ""
+for {set k 0} {$k <= [expr [lindex $NStory $numInFile 0]-1]} {incr k 1} {
+	set maxX 0.0
+	set maxZ 0.0
+	set exteriornodestmp2 ""
+	set exteriornodesIDtmp ""
+	set exteriorGirdernodesIDtmp ""
+	set exteriorBeamnodesIDtmp ""
+	lappend exteriornodestmp2 [lindex $iexteriornodes $numInFile $k]
+	for {set i 0} {$i <= [expr [lindex $nodecount $k]-1]} {incr i 1} {
+		if {$maxX <= [lindex $exteriornodestmp2 $numInFile $i 1]} {
+			set maxX [lindex $exteriornodestmp2 $numInFile $i 1]
+		}
+		if {$maxZ <= [lindex $exteriornodestmp2 $numInFile $i 3]} {
+			set maxZ [lindex $exteriornodestmp2 $numInFile $i 3]
+		}		
+	}
+	set minX [lindex $exteriornodestmp2 $numInFile 0 1]
+	set minZ [lindex $exteriornodestmp2 $numInFile 0 3]
+	for {set i 0} {$i <= [expr [lindex $nodecount $k]-1]} {incr i 1} {
+		if {$minX > [lindex $exteriornodestmp2 $numInFile $i 1]} {
+			set minX [lindex $exteriornodestmp2 $numInFile $i 1]
+		}
+		if {$minZ > [lindex $exteriornodestmp2 $numInFile $i 3]} {
+			set minZ [lindex $exteriornodestmp2 $numInFile $i 3]
+		}		
+	}
+	for {set i 0} {$i <= [expr [lindex $nodecount $k]-1]} {incr i 1} {
+		if {$minX == [lindex $exteriornodestmp2 $numInFile $i 1]} {
+			lappend exteriornodesIDtmp [lindex $exteriornodestmp2 $numInFile $i 0]
+			lappend exteriorGirdernodesIDtmp [lindex $exteriornodestmp2 $numInFile $i 0]
+		}
+		if {$maxX == [lindex $exteriornodestmp2 $numInFile $i 1]} {
+			lappend exteriornodesIDtmp [lindex $exteriornodestmp2 $numInFile $i 0]
+			lappend exteriorGirdernodesIDtmp [lindex $exteriornodestmp2 $numInFile $i 0]
+		}
+		if {$minZ == [lindex $exteriornodestmp2 $numInFile $i 3]} {
+			if {$minX != [lindex $exteriornodestmp2 $numInFile $i 1] && $maxX != [lindex $exteriornodestmp2 $numInFile $i 1]} {
+				lappend exteriornodesIDtmp [lindex $exteriornodestmp2 $numInFile $i 0]
+			}
+			lappend exteriorBeamnodesIDtmp [lindex $exteriornodestmp2 $numInFile $i 0]
+		}
+		if {$maxZ == [lindex $exteriornodestmp2 $numInFile $i 3]} {
+			if {$minX != [lindex $exteriornodestmp2 $numInFile $i 1] && $maxX != [lindex $exteriornodestmp2 $numInFile $i 1]} {
+				lappend exteriornodesIDtmp [lindex $exteriornodestmp2 $numInFile $i 0]
+			}
+			lappend exteriorBeamnodesIDtmp [lindex $exteriornodestmp2 $numInFile $i 0]
+		}
+	}
+	lappend exteriornodesID $exteriornodesIDtmp
+	lappend exteriorGirdernodesID $exteriorGirdernodesIDtmp
+	lappend exteriorBeamnodesID $exteriorBeamnodesIDtmp	
+	lappend aNBayZ [expr [llength [lindex $exteriorGirdernodesID $k]]/2-1]
+	lappend aNFrame [expr [llength [lindex $exteriorGirdernodesID $k]]/2]
+}
+	lappend iexteriornodesID $exteriornodesID
+	lappend iexteriorGirdernodesID $exteriorGirdernodesID
+	lappend iexteriorBeamnodesID $exteriorBeamnodesID
+	lappend NBayZ $aNBayZ; #NBAYZ		# number of bays in Z direction
+	lappend NFrame $aNFrame;	# actually deal with frames in Z direction, as this is an easy extension of the 2d model
+
 	
 #
-	puts "Number of Stories in Y: $NStorytmp Number of bays in X: $NBaytmp Number of bays in Z: $NBayZtmp"
+	puts "Number of Stories in Y: $NStorytmp Number of Frames in each floor: $NFrame"
 #
 #
