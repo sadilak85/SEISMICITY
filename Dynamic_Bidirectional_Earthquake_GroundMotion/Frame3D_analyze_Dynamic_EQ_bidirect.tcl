@@ -73,7 +73,7 @@ for {set numInFile 0} {$numInFile <= [expr $Buildingnum-1]} {incr numInFile 1} {
  source Frame3D_Build_RC.tcl ;  			#inputing many building parameters
  source Loads_Weights_Masses.tcl; 		#Gravity, Nodal Weights, Lateral Loads, Masses
 }
-#source attach_buildings.tcl
+source Pounding_buildings.tcl
 puts "Model Built"
 #
 #
