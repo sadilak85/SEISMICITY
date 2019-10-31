@@ -1,4 +1,3 @@
-ilk column elementi de input al 
 
 beam ve gridler ortak beam olabilir mi 
 
@@ -15,6 +14,6 @@ suan kod tüm kadlarda ilk elemani standart length farzediyo
 Slab leri en genel yoldan nasil verebiliriz, concave, acili köseli binalarda slab leri generic almak sakincali.. yüzey alanindan bi formul?
 
 
-pushover icin iFloor hatali o bölgeye bir daha bak komple slab vs ile beraber düsün
+pushover icin iFloor yani agirlik dagilimi suan icin dogru degil ya da her olasilik icin degil
 
 unitler en son SI cevrilecek 
