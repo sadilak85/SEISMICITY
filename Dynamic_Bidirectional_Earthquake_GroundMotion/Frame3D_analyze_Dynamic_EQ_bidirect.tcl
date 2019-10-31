@@ -26,9 +26,9 @@ source DisplayPlane.tcl;		# procedure for displaying a plane in model
 source DisplayModel3D.tcl;		# procedure for displaying 3D perspectives of model
 source BuildRCrectSection.tcl;		# procedure for definining RC fiber section
 
-set Dlevel 10000;	# numbering increment for new-level nodes
-set Dframe 100;	# numbering increment for new-frame nodes
-set FirstColumn 20100;							# ID: first column assuming it starts with 1   ????????????????????????????????????
+set Modalanalysis 0; # 1 if Modal analysis
+set numModes 3; # if Modal analysis is thought, then decide the number of Modes in total
+
 # Define SECTIONS -------------------------------------------------------------
 set SectionType FiberSection;		# options: Elastic FiberSection
 
@@ -71,59 +71,26 @@ source split_inputFileNames.tcl; # take file names, define number of buildings a
 # ---------------------   CREATE THE MODEL  -----------------------------------------------------
 for {set numInFile 0} {$numInFile <= [expr $Buildingnum-1]} {incr numInFile 1} {
  source Frame3D_Build_RC.tcl ;  			#inputing many building parameters
- source LoadWeightGravity.tcl; 		#Gravity, Nodal Weights, Lateral Loads, Masses
+ source Loads_Weights_Masses.tcl; 		#Gravity, Nodal Weights, Lateral Loads, Masses
 }
 #source attach_buildings.tcl
 puts "Model Built"
 #
 #
-# ------------   Eigenvalue analysis  -------------------------------------------------------
-set numModes 3
-set lambda [eigen  $numModes];
-
-# calculate frequencies and periods of the structure ---------------------------------------------------
-set omega {}
-set f {}
-set T {}
-set pi 3.141593
-
-foreach lam $lambda {
-	lappend omega [expr sqrt($lam)]
-	lappend f [expr sqrt($lam)/(2*$pi)]
-	lappend T [expr (2*$pi)/sqrt($lam)]
-}
-
-puts "periods are $T"
 # ---------------------   CREATE OUTPUT FILES  -----------------------------------------------------
 for {set numInFile 0} {$numInFile <= [expr $Buildingnum-1]} {incr numInFile 1} {
 	source Recorder_outputs.tcl
 }
-# Define DISPLAY -------------------------------------------------------------
-DisplayModel3D DeformedShape ;	 # options: DeformedShape NodeNumbers ModeShape
 
-# ###################
-# GRAVITY -------------------------------------------------------------
-# define GRAVITY load applied to beams and columns -- eleLoad applies loads in local coordinate axis
-
-pattern Plain 101 Linear {
-for {set numInFile 0} {$numInFile <= [expr $Buildingnum-1]} {incr numInFile 1} {
-	for {set i 0} {$i <= [expr [llength [lindex $LCol $numInFile]]-1]} {incr i 1} {
-		eleLoad -ele [lindex $LCol $numInFile $i 0] -type -beamUniform 0. 0. -$QdlCol; 	# COLUMNS
-	}
-	for {set i 0} {$i <= [expr [llength [lindex $LBeam $numInFile]]-1]} {incr i 1} {
-		eleLoad -ele [lindex $LBeam $numInFile $i 0]  -type -beamUniform -[lindex $QdlBeam $numInFile $i 1] 0.; 	# BEAMS
-	}
-	for {set i 0} {$i <= [expr [llength [lindex $LGird $numInFile]]-1]} {incr i 1} {
-		eleLoad -ele [lindex $LGird $numInFile $i 0]  -type -beamUniform -$QdlGird 0.;	# GIRDS
-	}
+if {$Modalanalysis == 1} {
+	source ModalAnalysis.tcl
+} else {
+	# Define DISPLAY -------------------------------------------------------------
+	DisplayModel3D DeformedShape ;	 # options: DeformedShape NodeNumbers ModeShape
 }
-}; # Pattern plain 101 linear close 
 
+source Gravity.tcl
 
-puts goGravity
-# Gravity-analysis parameters -- load-controlled static analysis
-set Tol 1.0e-8;			# convergence tolerance for test
-variable constraintsTypeGravity Plain;		# default;
 if {  [info exists RigidDiaphragm] == 1} {
 	if {$RigidDiaphragm=="ON"} {
 		variable constraintsTypeGravity Lagrange;	#  large model: try Transformation
@@ -143,18 +110,13 @@ analyze $NstepGravity;		# apply gravity
 # ------------------------------------------------- maintain constant gravity loads and reset time to zero
 loadConst -time 0.0
 
-# -------------------------------------------------------------
-#
-#
-# Define DISPLAY -------------------------------------------------------------
-# the deformed shape is defined in the build file
+# Plot displacements -------------------------------------------------------------
 recorder plot $dataDir/Disp_FreeNodes$_aBID.out DisplDOF[lindex $iGMdirection 0] 1100 10 400 400 -columns  1 [expr 1+[lindex $iGMdirection 0]] ; # a window to plot the nodal displacements versus time
 recorder plot $dataDir/Disp_FreeNodes$_aBID.out DisplDOF[lindex $iGMdirection 1] 1100 410 400 400 -columns 1 [expr 1+[lindex $iGMdirection 1]] ; # a window to plot the nodal displacements versus time
 
 # set up ground-motion-analysis parameters
 set DtAnalysis	[expr 0.01*$sec];	# time-step Dt for lateral analysis
 set TmaxAnalysis	[expr 10. *$sec];	# maximum duration of ground-motion analysis -- should be 50*$sec
-
 
 # ----------- set up analysis parameters
 source LibAnalysisDynamicParameters.tcl;	# constraintsHandler,DOFnumberer,system-ofequations,convergenceTest,solutionAlgorithm,integrator
