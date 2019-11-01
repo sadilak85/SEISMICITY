@@ -17,13 +17,13 @@ proc DisplayModel3D { {ShapeType nill} {dAmp 5}  {xLoc 0} {yLoc 0} {xPixels 0} {
 
 	if {  [info exists TunitTXT] != 1} {set TunitTXT ""};		# set blank if it has not been defined previously.
 
-	if {  [info exists ScreenResolutionX] != 1} {set ScreenResolutionX 1224};		# set default if it has not been defined previously.
+	if {  [info exists ScreenResolutionX] != 1} {set ScreenResolutionX 1024};		# set default if it has not been defined previously.
 	if {  [info exists ScreenResolutionY] != 1} {set ScreenResolutionY 1068};		# set default if it has not been defined previously.
 
 	if {$xPixels == 0} {
 		set xPixels [expr int($ScreenResolutionX/1)];		
 		set yPixels [expr int($ScreenResolutionY/1)]
-		set xLoc -150
+		set xLoc 0
 		set yLoc -350
 	}
 	if {$ShapeType == "nill"} {
@@ -80,10 +80,10 @@ proc DisplayModel3D { {ShapeType nill} {dAmp 5}  {xLoc 0} {yLoc 0} {xPixels 0} {
 #		set windowTitle $windowTitle0$viewPlane$planeTXT
 #		recorder display $windowTitle $xLoc $yLoc $xPixels $yPixels  -wipe ; # display recorder
 #		DisplayPlane $ShapeType $dAmp $viewPlane 
-#		set viewPlane ZX
-#		set windowTitle $windowTitle0$viewPlane$planeTXT
-#		recorder display $windowTitle $xLoc $yLoc1 $xPixels $yPixels  -wipe ; # display recorder
-#		DisplayPlane $ShapeType $dAmp $viewPlane 
+		set viewPlane ZX
+		set windowTitle $windowTitle0$viewPlane$planeTXT
+		recorder display $windowTitle $xLoc $yLoc1 $xPixels $yPixels  -wipe ; # display recorder
+		DisplayPlane $ShapeType $dAmp $viewPlane 
 		set viewPlane 3D
 		set windowTitle $windowTitle0$viewPlane
 		recorder display $windowTitle $xLoc1 $yLoc1 $xPixels $yPixels  -wipe ; # display recorder

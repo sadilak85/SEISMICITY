@@ -18,8 +18,15 @@ set dtInput 0.00500 ;		    # DT
 # SET UP ----------------------------------------------------------------------------
 wipe;				# clear memory of all past model definitions
 model BasicBuilder -ndm 3 -ndf 6;	# Define the model builder, ndm=#dimension, ndf=#dofs
-set dataDir Data;			# set up name of data directory
-file mkdir $dataDir; 			# create data directory
+
+puts "Enter the folder name inside the input folder which includes simulation include files: "
+gets stdin inputFoldername
+set inputFilename "inputs/$inputFoldername/INPUT_"
+set outputFilename $inputFoldername
+set FileExt ".tcl"
+
+set dataDir outputs/$outputFilename;			# set up name of data directory
+file mkdir "$dataDir"; 			# create data directory
 set GMdir "GMfiles";		# ground-motion file directory
 source LibUnits.tcl;			# define units
 source DisplayPlane.tcl;		# procedure for displaying a plane in model
@@ -59,10 +66,6 @@ geomTransf Linear $IDBeamTransf 0 0 1
 geomTransf Linear $IDGirdTransf 1 0 0
 
 # ---------------------   INPUT DATA from FILE  -----------------------------------------------------
-set inputFilename "inputs/INPUT_"
-#set outputFilename "inputs/INPUT_"
-set FileExt ".tcl"
-
 set Buildingnum 0; # initialize the total number of buildings
 set ainputFilename ""
 

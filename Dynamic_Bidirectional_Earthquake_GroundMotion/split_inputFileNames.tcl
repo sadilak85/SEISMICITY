@@ -21,4 +21,3 @@ foreach e $l1 {
 	lappend ainputFilename $inputFilename$iBID$FileExt
 	set Buildingnum [expr $Buildingnum+1]
 }
-

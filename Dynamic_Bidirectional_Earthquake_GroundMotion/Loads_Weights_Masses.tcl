@@ -78,7 +78,7 @@ set QdlGird $QGird; 			# dead load distributed along girder
 
 # ------------------------- MASS NODE ASSIGNMENT is not CORRECT due to unknown NODAL inputting format
 set aFloorWeighttmp ""
-for {set i 1} {$i <= [lindex $NStory $numInFile 0]} {incr i 1} {
+for {set i 1} {$i <= [lindex $NStory $numInFile]} {incr i 1} {
 	lappend aFloorWeighttmp 0
 }
 	lappend aFloorWeight $aFloorWeighttmp;	# Weight of each floor for each building
@@ -189,21 +189,21 @@ if [catch {open [lindex $ainputFilename $numInFile 0] r} inFileID] {
 
 set iFloorWeighttmp2 ""
 set maxFrame 0
-for {set j 1} {$j <= [lindex $NStory $numInFile 0]} {incr j 1} {
+for {set j 1} {$j <= [lindex $NStory $numInFile]} {incr j 1} {
 	if {$maxFrame<[lindex $NFrame $numInFile 1]} {
 		set maxFrame [lindex $NFrame $numInFile 1]	
 	}
 }
 for {set i 1} {$i <= $maxFrame} {incr i 1} {
 	set iFloorWeighttmp ""
-	for {set j 1} {$j <= [lindex $NStory $numInFile 0]} {incr j 1} {
+	for {set j 1} {$j <= [lindex $NStory $numInFile]} {incr j 1} {
 		lappend iFloorWeighttmp 0
 	}
 	lappend iFloorWeighttmp2 $iFloorWeighttmp
 }
 	lappend iFloorWeight $iFloorWeighttmp2;   # Weight of each floor Frames for each building
 for {set i 0} {$i <= [expr $maxFrame-1]} {incr i 1} {
-	for {set j 0} {$j <=[expr [lindex $NStory $numInFile 0]-1]} {incr j 1} {
+	for {set j 0} {$j <=[expr [lindex $NStory $numInFile]-1]} {incr j 1} {
 		lset iFloorWeight $numInFile $i $j [expr  [lindex $aFloorWeight $numInFile $j]/[lindex $NFrame $numInFile $j]]
 	}
 }
@@ -215,7 +215,7 @@ lappend WeightTotal $atmp
 lappend MassTotal $atmp
 lappend sumWiHi $atmp
 set WeightTotaltmp 0
-for {set i 1} {$i <= [lindex $NStory $numInFile 0]} {incr i 1} {
+for {set i 1} {$i <= [lindex $NStory $numInFile]} {incr i 1} {
 	set WeightTotaltmp [expr $WeightTotaltmp + [lindex $aFloorWeight $numInFile [expr $i-1]]]
 }
 lset WeightTotal $numInFile 1 $WeightTotaltmp
@@ -223,7 +223,7 @@ lset MassTotal $numInFile 1 [expr $WeightTotaltmp/$g]; # total mass for each bui
 
 
 set sumWiHitmp 0.0;		
-for {set i 1} {$i <= [lindex $NStory $numInFile 0]} {incr i 1} {
+for {set i 1} {$i <= [lindex $NStory $numInFile]} {incr i 1} {
 	# sum of storey weight times height, for lateral-load distribution
 	set sumWiHitmp [expr $sumWiHitmp + [lindex $aFloorWeight $numInFile [expr $i-1]]*[lindex $FloorHeight $numInFile [expr $i-1]]]
 }
@@ -237,12 +237,12 @@ lset sumWiHi $numInFile 1 $sumWiHitmp; 	# sum of storey weight times height, for
 set iFPush "";			#lateral load for pushover
 set iNodePush "";		# nodes for pushover/cyclic, vectorized
 set iFjtmp ""
-for {set i 1} {$i <= [lindex $NStory $numInFile 0]} {incr i 1} {
+for {set i 1} {$i <= [lindex $NStory $numInFile]} {incr i 1} {
 	lappend iFjtmp 0
 }
 	lappend iFj $iFjtmp;   # per floor per building
 
-for {set j 0} {$j <=[expr [lindex $NStory $numInFile 0]-1]} {incr j 1} {	
+for {set j 0} {$j <=[expr [lindex $NStory $numInFile]-1]} {incr j 1} {	
 	set FloorWeight [lindex $iFloorWeight $numInFile 0 $j];
 	lset iFj $numInFile $j [expr $FloorWeight*[lindex $FloorHeight $numInFile $j]/[lindex $sumWiHi $numInFile 1]*[lindex $WeightTotal $numInFile 1]];		
 }
