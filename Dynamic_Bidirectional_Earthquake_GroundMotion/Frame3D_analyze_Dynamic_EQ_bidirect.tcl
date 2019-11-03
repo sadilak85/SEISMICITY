@@ -22,13 +22,13 @@ model BasicBuilder -ndm 3 -ndf 6;	# Define the model builder, ndm=#dimension, nd
 puts "Enter the folder name inside the input folder which includes simulation include files: "
 gets stdin inputFoldername
 set inputFilename "inputs/$inputFoldername/INPUT_"
-set outputFilename $inputFoldername
+set InputDir inputs/$inputFoldername;			# set up name of input directory
 set FileExt ".tcl"
-
+set outputFilename $inputFoldername
 set dataDir outputs/$outputFilename;			# set up name of data directory
 file mkdir "$dataDir"; 			# create data directory
 set GMdir "GMfiles";		# ground-motion file directory
-source LibUnits.tcl;			# define units
+source LibUnits.tcl;			# define units (kip-in-sec)
 source DisplayPlane.tcl;		# procedure for displaying a plane in model
 source DisplayModel3D.tcl;		# procedure for displaying 3D perspectives of model
 source BuildRCrectSection.tcl;		# procedure for definining RC fiber section
@@ -76,7 +76,7 @@ for {set numInFile 0} {$numInFile <= [expr $Buildingnum-1]} {incr numInFile 1} {
  source Frame3D_Build_RC.tcl ;  			#inputing many building parameters
  source Loads_Weights_Masses.tcl; 		#Gravity, Nodal Weights, Lateral Loads, Masses
 }
-source Pounding_buildings.tcl
+#source Pounding_buildings.tcl
 puts "Model Built"
 #
 #

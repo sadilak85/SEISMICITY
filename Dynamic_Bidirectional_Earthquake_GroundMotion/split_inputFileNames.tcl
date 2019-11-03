@@ -4,19 +4,22 @@
 #	and the file has an extension ".tcl"
 #   123 is the building ID (BID)
 #
-set contents [glob -directory  "inputs" "*.tcl"]
+set contents [glob -directory  $InputDir "*.tcl"]
 
 foreach item $contents {
-    lappend Filenames $item
+    lappend pathname $item
 }
-
-foreach e $Filenames {
-    set e [split $e "_"]
-    lappend l1 [lindex $e 1]
+foreach ff $pathname {
+    set ff [split $ff "/"]
+    lappend Filename [lindex $ff [expr [llength $ff]-1]]
 }
-foreach e $l1 {
-    set e [split $e $FileExt]
-	set iBID [lindex $e 0]
+foreach ll $Filename {
+    set ll [split $ll "_"]
+    lappend infiles [lindex $ll 1]
+}
+foreach kk $infiles {
+    set kk [split $kk $FileExt]
+	set iBID [lindex $kk 0]
     lappend BID $iBID
 	lappend ainputFilename $inputFilename$iBID$FileExt
 	set Buildingnum [expr $Buildingnum+1]

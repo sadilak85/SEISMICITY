@@ -23,3 +23,7 @@ set PI [expr 2*asin(1.0)]; 		# define constants
 set g [expr 32.2*$ft/pow($sec,2)]; 	# gravitational acceleration
 set Ubig 1.e10; 			# a really large number
 set Usmall [expr 1/$Ubig]; 		# a really small number
+
+
+#set in 0.394; 				# in --> cm      1 Zoll = 2.54 cm
+#set kip 2.2046; 				# kip --> ton    1 kip = 0.4536 ton
