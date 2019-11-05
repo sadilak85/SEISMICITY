@@ -15,7 +15,7 @@ set iGMdirection "1 3";			# ground-motion direction
 set iGMfact "1.5 0.75";			# ground-motion scaling factor
 set dtInput 0.00500 ;		    # DT
 
-# SET UP ----------------------------------------------------------------------------
+# ------------  SET UP -------------------------------------------------------------------------
 wipe;				# clear memory of all past model definitions
 model BasicBuilder -ndm 3 -ndf 6;	# Define the model builder, ndm=#dimension, ndf=#dofs
 
@@ -33,12 +33,11 @@ source DisplayPlane.tcl;		# procedure for displaying a plane in model
 source DisplayModel3D.tcl;		# procedure for displaying 3D perspectives of model
 source BuildRCrectSection.tcl;		# procedure for definining RC fiber section
 
-set Modalanalysis 0; # 1 if Modal analysis
-set numModes 3; # if Modal analysis is thought, then decide the number of Modes in total
-
+set numModes 3; # decide the number of Modes in total for Modal Analysis
+#
 # Define SECTIONS -------------------------------------------------------------
 set SectionType FiberSection;		# options: Elastic FiberSection
-
+#
 set RigidDiaphragm ON ;		# options: ON, OFF. specify this before the analysis parameters are set the constraints are handled differently.
 set perpDirn 2;				# perpendicular to plane of rigid diaphragm
 set numIntgrPts 5;
@@ -52,7 +51,7 @@ set GirdSecTagFiber 6
 set SecTagTorsion 70
 # ---------------------- Define SECTIONs --------------------------------
 source SectionProperties.tcl
-
+#
 # define ELEMENTS tags
 # set up geometric transformations of element
 #   separate columns and beams, in case of P-Delta analysis for columns
@@ -60,40 +59,39 @@ set IDColTransf 1; # all columns
 set IDBeamTransf 2; # all beams
 set IDGirdTransf 3; # all girds
 set ColTransfType Linear ;		# options for columns: Linear PDelta  Corotational
-
+#
 geomTransf $ColTransfType  $IDColTransf  0 0 1;			# orientation of column stiffness affects bidirectional response.
 geomTransf Linear $IDBeamTransf 0 0 1
 geomTransf Linear $IDGirdTransf 1 0 0
-
+#
 # ---------------------   INPUT DATA from FILE  -----------------------------------------------------
 set Buildingnum 0; # initialize the total number of buildings
 set ainputFilename ""
-
 source split_inputFileNames.tcl; # take file names, define number of buildings and take the building IDs
-
-# ---------------------   CREATE THE MODEL  -----------------------------------------------------
+#
+# ---------------------   CREATE THE MODEL  ----------------------------------------------------------
 for {set numInFile 0} {$numInFile <= [expr $Buildingnum-1]} {incr numInFile 1} {
  source Frame3D_Build_RC.tcl ;  			#inputing many building parameters
  source Loads_Weights_Masses.tcl; 		#Gravity, Nodal Weights, Lateral Loads, Masses
 }
-#source Pounding_buildings.tcl
+if {$Buildingnum>1} {
+	source Pounding_buildings.tcl
+}
 puts "Model Built"
 #
+# -------------------------  MODAL ANALYSIS  ---------------------------------------------------
+source ModalAnalysis.tcl
 #
 # ---------------------   CREATE OUTPUT FILES  -----------------------------------------------------
 for {set numInFile 0} {$numInFile <= [expr $Buildingnum-1]} {incr numInFile 1} {
 	source Recorder_outputs.tcl
 }
-
-if {$Modalanalysis == 1} {
-	source ModalAnalysis.tcl
-} else {
-	# Define DISPLAY -------------------------------------------------------------
-	DisplayModel3D DeformedShape ;	 # options: DeformedShape NodeNumbers ModeShape
-}
-
+# Define DISPLAY -------------------------------------------------------------
+DisplayModel3D DeformedShape ;	 # options: DeformedShape NodeNumbers ModeShape
+#
+# ---------------------  GRAVITY LOADS  -----------------------------------------------------
 source Gravity.tcl
-
+#
 if {  [info exists RigidDiaphragm] == 1} {
 	if {$RigidDiaphragm=="ON"} {
 		variable constraintsTypeGravity Lagrange;	#  large model: try Transformation

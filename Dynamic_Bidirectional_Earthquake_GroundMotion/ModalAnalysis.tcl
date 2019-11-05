@@ -13,19 +13,24 @@ foreach lam $lambda {
 	lappend T [expr (2*$pi)/sqrt($lam)]
 }
 
-puts "periods are $T"
-
-# write the output file cosisting of periods
-set period "modes/Periods.txt"
-set Periods [open $period "w"]
-foreach t $T {
-	puts $Periods " $t"
-}
-close $Periods
-
 # record the eigenvectors
 # ------------------------
- record
+# record
 
 # Define DISPLAY -------------------------------------------------------------
-DisplayModel3D ModeShape ;	 # options: DeformedShape NodeNumbers ModeShape
+#DisplayModel3D ModeShape ;	 # options: DeformedShape NodeNumbers ModeShape
+
+# -------------------------------------------------------------
+
+for {set numInFile 0} {$numInFile <= [expr $Buildingnum-1]} {incr numInFile 1} {
+	set SupportNodeFirst [lindex $iSupportNode $numInFile 0];						# ID: first support node
+	set aBID [lindex $BID $numInFile]; # assign Building number
+	set _aBID "_Bid$aBID"
+
+	for { set k 1 } { $k <= $numModes } { incr k } {
+		recorder Node -file [format "$dataDir/mode%i$_aBID.out" $k] -node [lindex $FreeNodeID $numInFile] -dof 1 2 3  "eigen $k"
+	}
+	puts "eigenfrequencies of the Building $aBID are $f"
+	puts "periods of the Building $aBID are $T"
+}
+#
