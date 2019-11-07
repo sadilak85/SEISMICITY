@@ -52,6 +52,11 @@ set SecTagTorsion 70
 # ---------------------- Define SECTIONs --------------------------------
 source SectionProperties.tcl
 #
+# ---------------------   INPUT DATA from FILE  -----------------------------------------------------
+set Buildingnum 0; # initialize the total number of buildings
+set ainputFilename ""
+source split_inputFileNames.tcl; # take file names, define number of buildings and take the building IDs
+#
 # define ELEMENTS tags
 # set up geometric transformations of element
 #   separate columns and beams, in case of P-Delta analysis for columns
@@ -63,11 +68,6 @@ set ColTransfType Linear ;		# options for columns: Linear PDelta  Corotational
 geomTransf $ColTransfType  $IDColTransf  0 0 1;			# orientation of column stiffness affects bidirectional response.
 geomTransf Linear $IDBeamTransf 0 0 1
 geomTransf Linear $IDGirdTransf 1 0 0
-#
-# ---------------------   INPUT DATA from FILE  -----------------------------------------------------
-set Buildingnum 0; # initialize the total number of buildings
-set ainputFilename ""
-source split_inputFileNames.tcl; # take file names, define number of buildings and take the building IDs
 #
 # ---------------------   CREATE THE MODEL  ----------------------------------------------------------
 for {set numInFile 0} {$numInFile <= [expr $Buildingnum-1]} {incr numInFile 1} {

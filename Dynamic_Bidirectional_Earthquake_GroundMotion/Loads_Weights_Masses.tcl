@@ -6,7 +6,8 @@
 set Tslab [expr 6*$in];			# 6-inch slab
 set DLfactor 1.0;				# scale dead load up a little
 set QdlGird $QGird; 			# dead load distributed along girder
-
+#
+# ---------- Column Weights -----------------------
 	set WeightColtmp ""
 	set WeightColtmp2 ""
 	lappend WeightColtmp 0
@@ -20,7 +21,7 @@ set QdlGird $QGird; 			# dead load distributed along girder
 		 lset WeightCol $numInFile $i 1 [expr $QdlCol*[lindex $LCol $numInFile $i 1]];    # total Column weight
 		 lset WeightCol $numInFile $i 0 [lindex $LCol $numInFile $i 0]
 	}
-	
+# ---------- Girder Weights -----------------------	
 	set WeightGirdtmp ""
 	set WeightGirdtmp2 ""
 	set Lslabtmp ""
@@ -49,7 +50,8 @@ set QdlGird $QGird; 			# dead load distributed along girder
 		 lset WeightGird $numInFile  $i 0 [lindex $LGird $numInFile $i 0]
 		 lset Lslab $numInFile  $i 0 [lindex $LGird $numInFile $i 0]
 	}
-
+	
+# ---------- Beam Weights -----------------------
 	set WeightBeamtmp ""
 	set WeightBeamtmp2 ""
 	set QdlBeamtmp2 ""

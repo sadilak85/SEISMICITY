@@ -235,8 +235,7 @@ for {set k 0} {$k <= [expr [lindex $NStory $numInFile]-1]} {incr k 1} {
 #
 # ------------------------  rigidDiaphragm ------------------------------------------------------	
 for {set k 0} {$k <= [expr [lindex $NStory $numInFile]-1]} {incr k 1} {
-puts ifloornodes$ifloornodes
-	for {set i 0} {$i <= [expr [llength [lindex $ifloornodes $numInFile 0]]-1]} {incr i 1} {
+	for {set i 0} {$i <= [expr [llength [lindex $ifloornodes $numInFile $k]]-1]} {incr i 1} {
 		rigidDiaphragm 2 [lindex $iMasterNode $numInFile $k] [lindex $ifloornodes $numInFile $k $i 0]
 	}
 }
