@@ -47,5 +47,7 @@
 		recorder Element -file $dataDir/StressStrain_concEle_sec_1_$aFirstColumn$_aBID.out -time -ele $aFirstColumn section $numIntgrPts fiber $yFiber $zFiber $IDconcCore  stressStrain;	# Core Concrete stress-strain, node i
 		recorder Element -file $dataDir/StressStrain_reinfEle_sec_1_$aFirstColumn$_aBID.out -time -ele $aFirstColumn section $numIntgrPts fiber $yFiber $zFiber $IDSteel  stressStrain;	# steel fiber stress-strain, node i
 	}
+	recorder Element -file $dataDir/ForceEletest_220020101.out -time -ele 220020101 localForce;				# element forces in local coordinates
+	
 #
 #

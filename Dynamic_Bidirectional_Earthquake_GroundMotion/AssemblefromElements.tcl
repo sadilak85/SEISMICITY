@@ -133,8 +133,7 @@
 			   if {[string match $word "#COLUMNLENGTH"] == 1} {set flag 0}
             }
 			if {$flag == 1} {
-				set list [regexp -all -inline -- {[-+]?[0-9]*\.?[0-9]+} $line]
-				set elemID [lreplace $list 3 5]
+				set elemID [regexp -all -inline -- {[-+]?[0-9]*\.?[0-9]+} $line]
 				lappend elidcolumnnodestmp $elemID
 			}
          } else {
@@ -166,8 +165,7 @@
 			   if {[string match $word "#BEAMLENGTH"] == 1} {set flag 0}
             }
 			if {$flag == 1} {
-				set list [regexp -all -inline -- {[-+]?[0-9]*\.?[0-9]+} $line]
-				set elemID [lreplace $list 3 5]
+				set elemID [regexp -all -inline -- {[-+]?[0-9]*\.?[0-9]+} $line]
 				lappend elidbeamnodestmp $elemID
 			}
          } else {
@@ -199,8 +197,7 @@
 			   if {[string match $word "#GIRDERLENGTH"] == 1} {set flag 0}
             }
 			if {$flag == 1} {
-				set list [regexp -all -inline -- {[-+]?[0-9]*\.?[0-9]+} $line]
-				set elemID [lreplace $list 3 5]
+				set elemID [regexp -all -inline -- {[-+]?[0-9]*\.?[0-9]+} $line]
 				lappend elidgirdnodestmp $elemID
 			}
          } else {

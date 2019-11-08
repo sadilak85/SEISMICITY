@@ -34,9 +34,11 @@ set NStorytmp 0
 
 
 # --------- CREATE MODEL from input files -----------------------------------------------------
-	source [lindex $ainputFilename $numInFile 0]
-	source AssemblefromNodes.tcl
-	source AssemblefromElements.tcl
+	source Transformation_Vectors.tcl;				# for Transformation purposes
+	source CreateNodes.tcl;							# Creates nodes
+	source CreateElements.tcl;						# Creates elements
+	source AssemblefromNodes.tcl; 					# Do some work from the Node info from INPUT file
+	source AssemblefromElements.tcl;				# Do some work from the Element info from INPUT file
 
 	
 #
