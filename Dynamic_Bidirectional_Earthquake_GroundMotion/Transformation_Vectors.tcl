@@ -261,9 +261,7 @@ for {set k 0} {$k <= [expr [llength [lindex $iColumnConnect $numInFile]]-1]} {in
 #set IDGirdTransf 3; # all girds
 set ColTransfType Linear ;		# options for columns: Linear PDelta  Corotational
 #
-puts IDBeamTransf$IDBeamTransf
-puts IDGirdTransf$IDGirdTransf
-puts IDColTransf$IDColTransf
+
 for {set k 0} {$k <= [expr [llength [lindex $iBeamConnect $numInFile]]-1]} {incr k 1} {
 	set vecxzX [lindex $IDBeamTransf $numInFile $k 1]
 	set vecxzY [lindex $IDBeamTransf $numInFile $k 2]
