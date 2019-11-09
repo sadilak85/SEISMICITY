@@ -130,7 +130,7 @@ if [catch {open [lindex $ainputFilename $numInFile 0] r} inFileID] {
 	}
 	lappend ifloornodes $floornodes
 	
-# ------------------------  Free Node ID for OUTPUT ------------------------------------------------------ Better to take a node defined????
+# ------------------------  Free Node ID for OUTPUT ---------- Better to take a node defined??????  Take all nodes
 	if [catch {open [lindex $ainputFilename $numInFile 0] r} inFileID] {
 		puts stderr "Cannot open input file for reading free node ID"
 	} else {
