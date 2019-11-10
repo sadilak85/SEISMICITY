@@ -143,19 +143,11 @@ set vecxztmp ""
 		set changetmp $nodeI
 		set nodeI $nodeJ
 		set nodeJ $changetmp
-		if {$vecxztmp1z>$vecxztmp2z} {
-			# { x, z } becomes { -z, x } : perpendicular CCW
-			set vecxztmpx [expr $vecxztmp1z-$vecxztmp2z]
-			set vecxztmpz [expr $vecxztmp2x-$vecxztmp1x]
-		} elseif {$vecxztmp1z<$vecxztmp2z} {
-			# { x, z } becomes { -z, x } : perpendicular CCW
-			set vecxztmpx [expr $vecxztmp1z-$vecxztmp2z]
-			set vecxztmpz [expr $vecxztmp2x-$vecxztmp1x]			
-		} else {
-			# { x, z } becomes { -z, x } : perpendicular CCW
-			set vecxztmpx 0.0
-			set vecxztmpz [expr $vecxztmp2x-$vecxztmp1x]			
-		}
+		
+		# { x, z } becomes { -z, x } : perpendicular CCW
+		set vecxztmpx [expr $vecxztmp1z-$vecxztmp2z]
+		set vecxztmpz [expr $vecxztmp2x-$vecxztmp1x]
+
 	} elseif {$vecxztmp1x==$vecxztmp2x} {
 		if {$vecxztmp1z<$vecxztmp2z} {
 			set changetmp $vecxztmp1z
@@ -166,29 +158,15 @@ set vecxztmp ""
 			set vecxztmp2x $changetmp
 			set changetmp $nodeI
 			set nodeI $nodeJ
-			set nodeJ $changetmp
-			# { x, z } becomes { -z, x } : perpendicular CCW
-			set vecxztmpx [expr $vecxztmp1z-$vecxztmp2z]
-			set vecxztmpz 0.0			
-		} else {
-			# { x, z } becomes { -z, x } : perpendicular CCW
-			set vecxztmpx [expr $vecxztmp1z-$vecxztmp2z]
-			set vecxztmpz 0.0	
+			set nodeJ $changetmp		
 		}
+			# { x, z } becomes { -z, x } : perpendicular CCW
+			set vecxztmpx [expr $vecxztmp1z-$vecxztmp2z]
+			set vecxztmpz 0.0
 	} else {
-		if {$vecxztmp1z>$vecxztmp2z} {
-			# { x, z } becomes { -z, x } : perpendicular CCW
-			set vecxztmpx [expr $vecxztmp1z-$vecxztmp2z]
-			set vecxztmpz [expr $vecxztmp2x-$vecxztmp1x]
-		} elseif {$vecxztmp1z<$vecxztmp2z} {
-			# { x, z } becomes { -z, x } : perpendicular CCW
-			set vecxztmpx [expr $vecxztmp1z-$vecxztmp2z]
-			set vecxztmpz [expr $vecxztmp2x-$vecxztmp1x]		
-		} else {
-			# { x, z } becomes { -z, x } : perpendicular CCW
-			set vecxztmpx 0.0
-			set vecxztmpz [expr $vecxztmp2x-$vecxztmp1x]	
-		}
+		# { x, z } becomes { -z, x } : perpendicular CCW
+		set vecxztmpx [expr $vecxztmp1z-$vecxztmp2z]
+		set vecxztmpz [expr $vecxztmp2x-$vecxztmp1x]
 	}
 
 	set vecxztmpabs [expr {sqrt($vecxztmpx*$vecxztmpx+$vecxztmpz*$vecxztmpz)}]
@@ -224,20 +202,7 @@ set vecxztmp ""
 	}
 # Set element axis direction to default directions first	
 	if {$vecxztmp1x<$vecxztmp2x} {
-		if {$vecxztmp1z>$vecxztmp2z} {
-			set changetmp $vecxztmp1z
-			set vecxztmp1z $vecxztmp2z
-			set vecxztmp2z $changetmp
-			set changetmp $vecxztmp1x
-			set vecxztmp1x $vecxztmp2x
-			set vecxztmp2x $changetmp
-			set changetmp $nodeI
-			set nodeI $nodeJ
-			set nodeJ $changetmp
-			# { x, z } becomes { z, -x } : perpendicular CW
-			set vecxztmpx [expr $vecxztmp2z-$vecxztmp1z]
-			set vecxztmpz [expr $vecxztmp1x-$vecxztmp2x]
-		} elseif {$vecxztmp1z<$vecxztmp2z} {
+		if {$vecxztmp1z<$vecxztmp2z} {
 			# { x, z } becomes { z, -x } : perpendicular CW
 			set vecxztmpx [expr $vecxztmp2z-$vecxztmp1z]
 			set vecxztmpz [expr $vecxztmp1x-$vecxztmp2x]		
@@ -252,7 +217,7 @@ set vecxztmp ""
 			set nodeI $nodeJ
 			set nodeJ $changetmp
 			# { x, z } becomes { z, -x } : perpendicular CW
-			set vecxztmpx 0.0
+			set vecxztmpx [expr $vecxztmp2z-$vecxztmp1z]
 			set vecxztmpz [expr $vecxztmp1x-$vecxztmp2x]
 		}
 	} elseif {$vecxztmp1x>$vecxztmp2x} {
@@ -266,18 +231,10 @@ set vecxztmp ""
 			set changetmp $nodeI
 			set nodeI $nodeJ
 			set nodeJ $changetmp
-			# { x, z } becomes { z, -x } : perpendicular CW
-			set vecxztmpx [expr $vecxztmp2z-$vecxztmp1z]
-			set vecxztmpz [expr $vecxztmp1x-$vecxztmp2x]
-		} elseif {$vecxztmp1z<$vecxztmp2z} {
-			# { x, z } becomes { z, -x } : perpendicular CW
-			set vecxztmpx [expr $vecxztmp2z-$vecxztmp1z]
-			set vecxztmpz [expr $vecxztmp1x-$vecxztmp2x]	
-		} else {
-			# { x, z } becomes { z, -x } : perpendicular CW
-			set vecxztmpx 0.0
-			set vecxztmpz [expr $vecxztmp1x-$vecxztmp2x]	
 		}
+		# { x, z } becomes { z, -x } : perpendicular CW
+		set vecxztmpx [expr $vecxztmp2z-$vecxztmp1z]
+		set vecxztmpz [expr $vecxztmp1x-$vecxztmp2x]		
 	} else {
 		if {$vecxztmp1z>$vecxztmp2z} {
 			set changetmp $vecxztmp1z
@@ -289,14 +246,10 @@ set vecxztmp ""
 			set changetmp $nodeI
 			set nodeI $nodeJ
 			set nodeJ $changetmp
-			# { x, z } becomes { z, -x } : perpendicular CW
-			set vecxztmpx [expr $vecxztmp2z-$vecxztmp1z]
-			set vecxztmpz 0.0			
-		} else {
-			# { x, z } becomes { z, -x } : perpendicular CW
-			set vecxztmpx [expr $vecxztmp2z-$vecxztmp1z]
-			set vecxztmpz 0.0		
 		}
+		# { x, z } becomes { z, -x } : perpendicular CW
+		set vecxztmpx [expr $vecxztmp2z-$vecxztmp1z]
+		set vecxztmpz [expr $vecxztmp1x-$vecxztmp2x]
 	} 
 
 	set vecxztmpabs [expr {sqrt($vecxztmpx*$vecxztmpx+$vecxztmpz*$vecxztmpz)}]

@@ -166,7 +166,7 @@ if [catch {open [lindex $ainputFilename $numInFile 0] r} inFileID] {
 	}
 	lappend FreeNodeID $FreeNodeIDtmp
 
-# ------------------------------  Exterior Node IDs ----------------------------------------
+# ------------------------------  Exterior Node IDs ?????????----------------------------------------
 set exteriorGirdernodesID ""
 set exteriornodesID ""
 set exteriorGirdernodesID ""
