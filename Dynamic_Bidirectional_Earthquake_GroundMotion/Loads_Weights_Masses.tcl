@@ -119,16 +119,16 @@ if [catch {open [lindex $ainputFilename $numInFile 0] r} inFileID] {
 						set WeightNodetmp 0
 						# Column Weights contribution to nodal mass
 						for {set i 0} {$i <= [expr [llength [lindex $LCol $numInFile]]-1]} {incr i 1} {
-							if {[lindex $elidcolumnnodes $numInFile $i 1] == $word} {
-								set a [lindex $elidcolumnnodes $numInFile $i 0]; #Element ID of connected elements for this node
+							if {[lindex $iColumnConnect $numInFile $i 1] == $word} {
+								set a [lindex $iColumnConnect $numInFile $i 0]; #Element ID of connected elements for this node
 								for {set j 0} {$j <= [expr [llength [lindex $LCol $numInFile]]-1]} {incr j 1} {
 									if {[lindex $WeightCol $numInFile $j 0] == $a} {
 										set WeightNodetmp [expr $WeightNodetmp + [expr [lindex $WeightCol $numInFile $j 1]/2]]
 									}
 								}
 							}
-							if {[lindex $elidcolumnnodes $numInFile $i 2] == $word} {
-								set b [lindex $elidcolumnnodes $numInFile $i 0]; #Element ID of connected elements for this node
+							if {[lindex $iColumnConnect $numInFile $i 2] == $word} {
+								set b [lindex $iColumnConnect $numInFile $i 0]; #Element ID of connected elements for this node
 								for {set j 0} {$j <= [expr [llength [lindex $LCol $numInFile]]-1]} {incr j 1} {
 									if {[lindex $WeightCol $numInFile $j 0] == $b} {
 										set WeightNodetmp [expr $WeightNodetmp + [expr [lindex $WeightCol $numInFile $j 1]/2]]
@@ -138,16 +138,16 @@ if [catch {open [lindex $ainputFilename $numInFile 0] r} inFileID] {
 						}
 						# Beam Weights contribution to nodal mass
 						for {set i 0} {$i <= [expr [llength [lindex $LBeam $numInFile]]-1]} {incr i 1} {
-							if {[lindex $elidbeamnodes $numInFile $i 1] == $word} {
-								set a [lindex $elidbeamnodes $numInFile $i 0]; #Element ID of connected elements for this node
+							if {[lindex $iBeamConnect $numInFile $i 1] == $word} {
+								set a [lindex $iBeamConnect $numInFile $i 0]; #Element ID of connected elements for this node
 								for {set j 0} {$j <= [expr [llength [lindex $LBeam $numInFile]]-1]} {incr j 1} {
 									if {[lindex $WeightBeam $numInFile $j 0] == $a} {
 										set WeightNodetmp [expr $WeightNodetmp + [expr [lindex $WeightBeam $numInFile $j 1]/2]]
 									}
 								}
 							}
-							if {[lindex $elidbeamnodes $numInFile $i 2] == $word} {
-								set b [lindex $elidbeamnodes $numInFile $i 0]; #Element ID of connected elements for this node
+							if {[lindex $iBeamConnect $numInFile $i 2] == $word} {
+								set b [lindex $iBeamConnect $numInFile $i 0]; #Element ID of connected elements for this node
 								for {set j 0} {$j <= [expr [llength [lindex $LBeam $numInFile]]-1]} {incr j 1} {
 									if {[lindex $WeightBeam $numInFile $j 0] == $b} {
 										set WeightNodetmp [expr $WeightNodetmp + [expr [lindex $WeightBeam $numInFile $j 1]/2]]
@@ -157,16 +157,16 @@ if [catch {open [lindex $ainputFilename $numInFile 0] r} inFileID] {
 						}
 						# Girder Weights contribution to nodal mass
 						for {set i 0} {$i <= [expr [llength [lindex $LGird $numInFile]]-1]} {incr i 1} {
-							if {[lindex $elidgirdnodes $numInFile $i 1] == $word} {
-								set a [lindex $elidgirdnodes $numInFile $i 0]; #Element ID of connected elements for this node
+							if {[lindex $iGirderConnect $numInFile $i 1] == $word} {
+								set a [lindex $iGirderConnect $numInFile $i 0]; #Element ID of connected elements for this node
 								for {set j 0} {$j <= [expr [llength [lindex $LGird $numInFile]]-1]} {incr j 1} {
 									if {[lindex $WeightGird $numInFile $j 0] == $a} {
 										set WeightNodetmp [expr $WeightNodetmp + [expr [lindex $WeightGird $numInFile $j 1]/2]]
 									}
 								}
 							}
-							if {[lindex $elidgirdnodes $numInFile $i 2] == $word} {
-								set b [lindex $elidgirdnodes $numInFile $i 0]; #Element ID of connected elements for this node
+							if {[lindex $iGirderConnect $numInFile $i 2] == $word} {
+								set b [lindex $iGirderConnect $numInFile $i 0]; #Element ID of connected elements for this node
 								for {set j 0} {$j <= [expr [llength [lindex $LGird $numInFile]]-1]} {incr j 1} {
 									if {[lindex $WeightGird $numInFile $j 0] == $b} {
 										set WeightNodetmp [expr $WeightNodetmp + [expr [lindex $WeightGird $numInFile $j 1]/2]]
