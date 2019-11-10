@@ -1,21 +1,10 @@
 # --------------------------------------------------------------------------------------------------
-# Example 8. Bidirectional Uniform Eartquake Excitation
+# Example 8. Static Pushover
 #                             Silvia Mazzoni & Frank McKenna, 2006
 # execute this file after you have built the model, and after you apply gravity
 #
-puts " -------------Uniaxial Inelastic Section, Nonlinear Model -------------"
-puts " -------------Uniform Earthquake Excitation -------------"
-puts " -------------Bidirectional GroundMotion -------------"
-
-# source in procedures
-source ReadSMDfile.tcl;		# procedure for reading GM file and converting it to proper format
-
-# Bidirectional Uniform Earthquake ground motion (uniform acceleration input at all support nodes)
-set iGMfile "H-E01140 H-E12140" ;		# ground-motion filenames, should be different files
-set iGMdirection "1 3";			# ground-motion direction
-set iGMfact "1.5 0.75";			# ground-motion scaling factor
-set dtInput 0.00500 ;		    # DT
-
+puts " ------------- Static Pushover Analysis -------------"
+#
 # ------------  SET UP -------------------------------------------------------------------------
 wipe;				# clear memory of all past model definitions
 model BasicBuilder -ndm 3 -ndf 6;	# Define the model builder, ndm=#dimension, ndf=#dofs
@@ -28,13 +17,11 @@ set FileExt ".tcl"
 set outputFilename $inputFoldername
 set dataDir outputs/$outputFilename;			# set up name of data directory
 file mkdir "$dataDir"; 			# create data directory
-set GMdir "GMfiles";		# ground-motion file directory
 source LibUnits.tcl;			# define units (kip-in-sec)
 source DisplayPlane.tcl;		# procedure for displaying a plane in model
 source DisplayModel3D.tcl;		# procedure for displaying 3D perspectives of model
 source BuildRCrectSection.tcl;		# procedure for definining RC fiber section
 
-set numModes 3; # decide the number of Modes in total for Modal Analysis
 #
 # Define SECTIONS -------------------------------------------------------------
 set SectionType FiberSection;		# options: Elastic FiberSection
@@ -68,8 +55,6 @@ if {$Buildingnum>1} {
 }
 puts "Model Built"
 #
-# -------------------------  MODAL ANALYSIS  ---------------------------------------------------
-source ModalAnalysis.tcl
 #
 # ---------------------   CREATE OUTPUT FILES  -----------------------------------------------------
 for {set numInFile 0} {$numInFile <= [expr $Buildingnum-1]} {incr numInFile 1} {
@@ -99,6 +84,25 @@ analyze $NstepGravity;		# apply gravity
 
 # ------------------------------------------------- maintain constant gravity loads and reset time to zero
 loadConst -time 0.0
+
+
+
+
+
+# characteristics of pushover analysis
+set Dmax [expr 0.1*$LBuilding ];	# maximum displacement of pushover. push to a % drift.
+set Dincr [expr 0.0000001*$LBuilding ];	# displacement increment. you want this to be small, but not too small to slow analysis
+set Dincr [expr 0.01*$in];
+#
+# -- STATIC PUSHOVER/CYCLIC ANALYSIS
+# create load pattern for lateral pushover load coefficient when using linear load pattern
+# need to apply lateral load only to the master nodes of the rigid diaphragm at each floor
+pattern Plain 200 Linear {;
+	foreach NodePush $iNodePush FPush $iFPush {
+			load $NodePush $FPush 0.0 0.0 0.0 0.0 0.0
+	}
+};		# end load pattern
+
 
 # Plot displacements -------------------------------------------------------------
 recorder plot $dataDir/Disp_FreeNodes$_aBID.out DisplDOF[lindex $iGMdirection 0] 1100 10 400 400 -columns  1 [expr 1+[lindex $iGMdirection 0]] ; # a window to plot the nodal displacements versus time
