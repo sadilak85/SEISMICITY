@@ -1,79 +1,3 @@
-# ------------------------  Boundary ------------------------------------------------------
-# determine support nodes where ground motions are input, for multiple-support excitation
-    if [catch {open [lindex $ainputFilename $numInFile 0] r} inFileID] {
-		puts stderr "Cannot open input file for reading ground fix points"
-    } else {
-      set flag 0
-	  set iSupportNodetmp ""
-		foreach line [split [read $inFileID] \n] {
-			if {[llength $line] == 0} {
-				# Blank line --> do nothing
-				continue
-			} elseif {$flag == 1} {
-				foreach word [split $line] {
-					if {[string match $word "#FLOOR"] == 1} {
-					set flag 0
-					break
-					}
-				}
-				if {$flag == 1} {
-					set list [regexp -all -inline -- {[-+]?[0-9]*\.?[0-9]+} $line]
-					foreach word [split $list] {
-						# BOUNDARY CONDITIONS
-						fix $word 1 1 1 0 1 0;		# pin all Ground Floor nodes
-						lappend iSupportNodetmp $word
-						break
-					}
-				}
-			} else {
-				foreach word [split $line] {
-					if {[string match $word "#GROUND"] == 1} {
-						set flag 1
-						break
-					}
-				}
-			}
-		}
-	close $inFileID
-	}
-	lappend iSupportNode $iSupportNodetmp
-	
-
-# ----------------------MASTERNODES IDS ------------------------------------------------------
-
-    if [catch {open [lindex $ainputFilename $numInFile 0] r} inFileID] {
-      puts stderr "Cannot open input file for reading constrain dofs rather than rigid diaphragm"
-    } else {
-      set flag 0
-	  set iMasterNodetmp ""
-      foreach line [split [read $inFileID] \n] {
-         if {[llength $line] == 0} {
-            # Blank line --> do nothing
-            continue
-         } elseif {$flag == 1} {
-		    foreach word [split $line] {
-			   if {[string match $word "#BEAM"] == 1} {set flag 0}
-            }
-			if {$flag == 1} {
-				set list [regexp -all -inline -- {[-+]?[0-9]*\.?[0-9]+} $line]
-				foreach MasterNodeID [split $list] {
-					fix $MasterNodeID 0  1  0  1  0  1;		# constrain other dofs that don't belong to rigid diaphragm control
-					lappend iMasterNodetmp $MasterNodeID
-					break
-				}
-			}
-         } else {
-            foreach word [split $line] {
-               if {$flag == 1} {
-                  break
-               }
-               if {[string match $word "#MASTERNODES"] == 1} {set flag 1}
-            }
-         }
-      }
-      close $inFileID
-   }
-  lappend iMasterNode $iMasterNodetmp
 
 # ------------------------ Floor Node IDs  ------------------------------------------------------
 if [catch {open [lindex $ainputFilename $numInFile 0] r} inFileID] {
@@ -233,11 +157,5 @@ for {set k 0} {$k <= [expr [lindex $NStory $numInFile]-1]} {incr k 1} {
 	lappend NBayZ $aNBayZ; #NBAYZ		# number of bays in Z direction
 	lappend NFrame $aNFrame;	# actually deal with frames in Z direction, as this is an easy extension of the 2d model
 #
-# ------------------------  rigidDiaphragm ------------------------------------------------------	
-for {set k 0} {$k <= [expr [lindex $NStory $numInFile]-1]} {incr k 1} {
-	for {set i 0} {$i <= [expr [llength [lindex $ifloornodes $numInFile $k]]-1]} {incr i 1} {
-		rigidDiaphragm 2 [lindex $iMasterNode $numInFile $k] [lindex $ifloornodes $numInFile $k $i 0]
-	}
-}
 #
 #

@@ -21,7 +21,7 @@ source LibUnits.tcl;			# define units (kip-in-sec)
 source DisplayPlane.tcl;		# procedure for displaying a plane in model
 source DisplayModel3D.tcl;		# procedure for displaying 3D perspectives of model
 source BuildRCrectSection.tcl;		# procedure for definining RC fiber section
-
+source python_calls.tcl
 #
 # Define SECTIONS -------------------------------------------------------------
 set SectionType FiberSection;		# options: Elastic FiberSection

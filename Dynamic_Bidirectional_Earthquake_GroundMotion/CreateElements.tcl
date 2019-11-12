@@ -24,4 +24,9 @@ for {set k 0} {$k <= [expr [llength [lindex $iColumnConnect $numInFile]]-1]} {in
 	set nodeJ [lindex $iColumnConnect $numInFile $k 2]
 	element nonlinearBeamColumn $elemID $nodeI $nodeJ $numIntgrPts $ColSecTag $elemID;		# columns
 }
-
+# ------------------------  rigidDiaphragm ------------------------------------------------------	
+for {set k 0} {$k <= [expr [lindex $NStory $numInFile]-1]} {incr k 1} {
+	for {set i 0} {$i <= [expr [llength [lindex $ifloornodes $numInFile $k]]-1]} {incr i 1} {
+		rigidDiaphragm 2 [lindex $iMasterNode $numInFile $k] [lindex $ifloornodes $numInFile $k $i 0]
+	}
+}

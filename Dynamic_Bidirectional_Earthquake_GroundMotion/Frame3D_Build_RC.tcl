@@ -34,10 +34,10 @@ set NStorytmp 0
 
 
 # --------- CREATE MODEL from input files -----------------------------------------------------
-	source Transformation_Vectors.tcl;				# for Transformation purposes
+	source AssemblefromElements.tcl;				# Beam/Girder tags, Transformation, vector definitions, etc.
+	source AssemblefromNodes.tcl;					# Identify special lists from Nodal input, define output node lists, etc.
 	source CreateNodes.tcl;							# Creates nodes
 	source CreateElements.tcl;						# Creates elements
-	source AssemblefromNodes.tcl; 					# Do some work from the Node info from INPUT file
 #
 # --------------------- FLOOR HEIGHTs ---------------------------------------------------------  
 #
