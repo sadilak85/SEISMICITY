@@ -76,42 +76,35 @@ def assign_element_type(inodecoordList,ieltnodeList,elemlenList):
 		vector_from_eltID = assign_vector_from_eltID(Beam_elt)
 		anglebtw=angle_between(vector_from_eltID_init, vector_from_eltID)
 		if ((anglebtw > 0.785398) or math.isclose(anglebtw, 0.785398, abs_tol = 0.04)) and ((anglebtw < 2.35619) or math.isclose(anglebtw, 2.35619, abs_tol = 0.04)):
-			print("birinci")
 			Girder_elt_Listtmp.append(ieltnodeList[i][0])
 			Girder_elt_Listtmp.append(ieltnodeList[i][1])
 			Girder_elt_Listtmp.append(ieltnodeList[i][2])
 			Girder_elt_List.append(Girder_elt_Listtmp)
 			Girder_elt_Listtmp=[]
 		elif ((anglebtw > 3.92699) or math.isclose(anglebtw, 3.92699, abs_tol = 0.04)) and ((anglebtw < 5.49779) or math.isclose(anglebtw, 5.49779, abs_tol = 0.04)):
-			print("ücüncü")
 			Girder_elt_Listtmp.append(ieltnodeList[i][0])
 			Girder_elt_Listtmp.append(ieltnodeList[i][1])
 			Girder_elt_Listtmp.append(ieltnodeList[i][2])
 			Girder_elt_List.append(Girder_elt_Listtmp)
 			Girder_elt_Listtmp=[]
 		elif (anglebtw == 0.0) or math.isclose(anglebtw, 0.0, abs_tol = 0.04):
-			print("besinci2")
 			Beam_elt_Listtmp.append(ieltnodeList[i][0])
 			Beam_elt_Listtmp.append(ieltnodeList[i][1])
 			Beam_elt_Listtmp.append(ieltnodeList[i][2])
 			Beam_elt_List.append(Beam_elt_Listtmp)
 			Beam_elt_Listtmp=[]
 		elif (anglebtw == 3.14159) or math.isclose(anglebtw, 3.14159, abs_tol = 0.04):
-			print("altinci2")
 			Beam_elt_Listtmp.append(ieltnodeList[i][0])
 			Beam_elt_Listtmp.append(ieltnodeList[i][1])
 			Beam_elt_Listtmp.append(ieltnodeList[i][2])
 			Beam_elt_List.append(Beam_elt_Listtmp)
 			Beam_elt_Listtmp=[]
 		else:
-			print("yedinci2")
 			Beam_elt_Listtmp.append(ieltnodeList[i][0])
 			Beam_elt_Listtmp.append(ieltnodeList[i][1])
 			Beam_elt_Listtmp.append(ieltnodeList[i][2])
 			Beam_elt_List.append(Beam_elt_Listtmp)
 			Beam_elt_Listtmp=[]
-	print(Beam_elt_List)
-	print(Girder_elt_List)
 	return Beam_elt_List, Girder_elt_List
 
 def read_initial(inputfile):
