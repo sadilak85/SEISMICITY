@@ -1,0 +1,1 @@
+Cesitli nedenlerden dolayi gap/kesiklik leri olan miniSEED dosyalarinin SAC donusumu esnasinda parcalanmalari birlestirmek icin kullanbilirsiniz. 
