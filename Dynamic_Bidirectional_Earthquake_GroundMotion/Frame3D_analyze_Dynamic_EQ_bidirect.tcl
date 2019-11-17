@@ -33,6 +33,7 @@ source LibUnits.tcl;			# define units (kip-in-sec)
 source DisplayPlane.tcl;		# procedure for displaying a plane in model
 source DisplayModel3D.tcl;		# procedure for displaying 3D perspectives of model
 source BuildRCrectSection.tcl;		# procedure for definining RC fiber section
+source AreaPolygon.tcl
 
 set numModes 3; # decide the number of Modes in total for Modal Analysis
 #
@@ -67,6 +68,7 @@ if {$Buildingnum>1} {
 	source Pounding_buildings.tcl
 }
 puts "Model Built"
+
 #
 # -------------------------  MODAL ANALYSIS  ---------------------------------------------------
 source ModalAnalysis.tcl

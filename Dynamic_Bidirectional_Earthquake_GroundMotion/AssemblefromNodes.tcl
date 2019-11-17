@@ -1,3 +1,46 @@
+#
+#
+# Script for calculating:
+# 	Node lists for floors, Special Node lists for outputting (for instance "Free Node ID")
+# 	
+#	by: Serhat Adilak, 2019
+#
+# ------------------------  Free Node ID for OUTPUT ---------- Better to take a node defined??????  Take all nodes
+	if [catch {open [lindex $ainputFilename $numInFile 0] r} inFileID] {
+		puts stderr "Cannot open input file for reading free node ID"
+	} else {
+	set flag 1
+	set FreeNodeIDtmp ""
+	foreach line [split [read $inFileID] \n] {
+		if {[llength $line] == 0} {
+			# Blank line --> do nothing
+			continue
+		} 
+		if {$flag == 1} {
+			foreach word [split $line] {
+				if {[string match $word "#MASTERNODES"] == 1} {
+					set flag 0
+					break
+				}
+				if {[string match $word "#BUILDING"] == 1} {
+					break
+				}
+				if {[string match $word "#GROUND"] == 1 || [string match $word "#FLOOR"] == 1} {
+					break
+				} else {
+					set list [regexp -all -inline -- {[-+]?[0-9]*\.?[0-9]+} $line]
+					foreach word [split $list] {
+					set FreeNodeIDtmp $word;	# ID: free node  to output results	
+					break
+					}
+				}
+			}
+		}
+	}
+	close $inFileID
+	}
+	lappend FreeNodeID $FreeNodeIDtmp
+
 
 # ------------------------ Floor Node IDs  ------------------------------------------------------
 if [catch {open [lindex $ainputFilename $numInFile 0] r} inFileID] {
@@ -54,43 +97,9 @@ if [catch {open [lindex $ainputFilename $numInFile 0] r} inFileID] {
 	}
 	lappend ifloornodes $floornodes
 	
-# ------------------------  Free Node ID for OUTPUT ---------- Better to take a node defined??????  Take all nodes
-	if [catch {open [lindex $ainputFilename $numInFile 0] r} inFileID] {
-		puts stderr "Cannot open input file for reading free node ID"
-	} else {
-	set flag 1
-	set FreeNodeIDtmp ""
-	foreach line [split [read $inFileID] \n] {
-		if {[llength $line] == 0} {
-			# Blank line --> do nothing
-			continue
-		} 
-		if {$flag == 1} {
-			foreach word [split $line] {
-				if {[string match $word "#MASTERNODES"] == 1} {
-					set flag 0
-					break
-				}
-				if {[string match $word "#BUILDING"] == 1} {
-					break
-				}
-				if {[string match $word "#GROUND"] == 1 || [string match $word "#FLOOR"] == 1} {
-					break
-				} else {
-					set list [regexp -all -inline -- {[-+]?[0-9]*\.?[0-9]+} $line]
-					foreach word [split $list] {
-					set FreeNodeIDtmp $word;	# ID: free node  to output results	
-					break
-					}
-				}
-			}
-		}
-	}
-	close $inFileID
-	}
-	lappend FreeNodeID $FreeNodeIDtmp
 
-# ------------------------------  Exterior Node IDs ?????????----------------------------------------
+# ------------------------------  Exterior Node IDs ?????????  hatali burda düzelt ve exteriorleri bul ----------------------------------------
+# ----------------------  NFrame Calculation -----------------
 set exteriorGirdernodesID ""
 set exteriornodesID ""
 set exteriorGirdernodesID ""

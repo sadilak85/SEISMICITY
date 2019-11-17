@@ -9,13 +9,10 @@
 # 	For the Linear Transformation Purpose
 # Notes: Script handles element axis directions regardless of their initial directions by user
 # 
-# Script also calculates each Element Length 
+# Script also calculates each ELEMENT LENGTHs 
 # 	
 #	by: Serhat Adilak, 2019
 #
-#set inputfile [lindex $ainputFilename $numInFile]
-#set pyoutput [exec python beamgirder.py $inputfile $outputfile]; # seperate elements into Beam & Girder in X-Z plane
-#   puts $pyoutput
 
 # --------- Take all Element ID's with their nodes from INPUT FILE ---------
    if [catch {open [lindex $ainputFilename $numInFile 0] r} inFileID] {
