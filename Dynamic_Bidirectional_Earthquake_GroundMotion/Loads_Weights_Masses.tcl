@@ -223,11 +223,11 @@ lset MassTotal $numInFile 1 [expr $WeightTotaltmp/$g]; # total mass for each bui
 
 
 set sumWiHitmp 0.0;		
-for {set i 1} {$i <= [lindex $NStory $numInFile]} {incr i 1} {
+#for {set i 1} {$i <= [lindex $NStory $numInFile]} {incr i 1} {
 	# sum of storey weight times height, for lateral-load distribution
-	set sumWiHitmp [expr $sumWiHitmp + [lindex $aFloorWeight $numInFile [expr $i-1]]*[lindex $FloorHeight $numInFile [expr $i-1]]]
-}
-lset sumWiHi $numInFile 1 $sumWiHitmp; 	# sum of storey weight times height, for lateral-load distribution
+#	set sumWiHitmp [expr $sumWiHitmp + [lindex $aFloorWeight $numInFile [expr $i-1]]*[lindex $FloorHeight $numInFile [expr $i-1]]]
+#}
+#lset sumWiHi $numInFile 1 $sumWiHitmp; 	# sum of storey weight times height, for lateral-load distribution
 
 # --------------------------------------------------------------------------------------------------------------------------------
 # LATERAL-LOAD distribution for static pushover analysis
@@ -237,28 +237,28 @@ lset sumWiHi $numInFile 1 $sumWiHitmp; 	# sum of storey weight times height, for
 set iFPush "";			#lateral load for pushover
 set iNodePush "";		# nodes for pushover/cyclic, vectorized
 set iFjtmp ""
-for {set i 1} {$i <= [lindex $NStory $numInFile]} {incr i 1} {
-	lappend iFjtmp 0
-}
-	lappend iFj $iFjtmp;   # per floor per building
+#for {set i 1} {$i <= [lindex $NStory $numInFile]} {incr i 1} {
+#	lappend iFjtmp 0
+#}
+#	lappend iFj $iFjtmp;   # per floor per building
 
-for {set j 0} {$j <=[expr [lindex $NStory $numInFile]-1]} {incr j 1} {	
-	set FloorWeight [lindex $iFloorWeight $numInFile 0 $j];
-	lset iFj $numInFile $j [expr $FloorWeight*[lindex $FloorHeight $numInFile $j]/[lindex $sumWiHi $numInFile 1]*[lindex $WeightTotal $numInFile 1]];		
-}
+#for {set j 0} {$j <=[expr [lindex $NStory $numInFile]-1]} {incr j 1} {	
+#	set FloorWeight [lindex $iFloorWeight $numInFile 0 $j];
+#	lset iFj $numInFile $j [expr $FloorWeight*[lindex $FloorHeight $numInFile $j]/[lindex $sumWiHi $numInFile 1]*[lindex $WeightTotal $numInFile 1]];		
+#}
 
 
-lappend iNodePush [lindex $iMasterNode $numInFile] ;		# nodes for pushover/cyclic, vectorized
-set iFPush $iFj;				# lateral load for pushover, vectorized for each building (list)
+#lappend iNodePush [lindex $iMasterNode $numInFile] ;		# nodes for pushover/cyclic, vectorized
+#set iFPush $iFj;				# lateral load for pushover, vectorized for each building (list)
 
-puts WeightTotal:$WeightTotal
-puts MassTotal:$MassTotal
-puts sumWiHi:$sumWiHi
-puts iFloorWeight:$iFloorWeight
-puts aFloorWeight:$aFloorWeight
-puts FloorHeight$FloorHeight
-puts FloorWeight$FloorWeight
-puts iFj$iFj
-puts iFPush$iFPush
+#puts WeightTotal:$WeightTotal
+#puts MassTotal:$MassTotal
+#puts sumWiHi:$sumWiHi
+#puts iFloorWeight:$iFloorWeight
+#puts aFloorWeight:$aFloorWeight
+#puts FloorHeight$FloorHeight
+#puts FloorWeight$FloorWeight
+#puts iFj$iFj
+#puts iFPush$iFPush
 #
 #

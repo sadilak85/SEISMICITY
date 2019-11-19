@@ -1,23 +1,30 @@
-# python3 program to evaluate 
-# area of a polygon using 
-# shoelace formula 
-  
-# (X[i], Y[i]) are coordinates of i'th point. 
-proc polygonArea {X Y n} {
-    # Initialze area 
-    set area 0.0
-  
-    # Calculate value of shoelace formula 
-    set j [expr $n - 1]
-	for {set i 0} {$i <= [expr $n-1]} {incr i 1} {
-        set tmparea [expr [expr [lindex $X $j]+[lindex $X $i]]*[expr [lindex $Y $j]-[lindex $Y $i]]]
-		set area [expr $area + $tmparea]
-        set j $i;   # j is previous vertex to i 
-	}
-  
-    # Return absolute value
-	set halfarea [expr $area / 2.0]
-	set result [expr abs($halfarea)]
-    return $result 
-}
+# compute the area of a polygon given its coordinates
+ #
+ # Argument: coords -> list of coordinates
+ #
+ # Returns: Area of polygon (taking care of holes inside the polygon)
+ #
+ proc polygonArea {coords}  {
+   # make sure we have a closed set of coords:
+   if {[lindex $coords 0] != [lindex $coords end-1] \
+    || [lindex $coords 1] != [lindex $coords end]} {
+       lappend coords [lindex $coords 0] [lindex $coords 1]
+   }
+   # append another point for the calculation:
+   lappend coords [lindex $coords 2] [lindex $coords 3]
+   # area:
+   set area 0
+   # number of vertices:
+   set n [expr {([llength $coords]-4)/2}]
+   # build lists with x and y coordinates only:
+   foreach {x y} $coords {
+      lappend xList $x
+      lappend yList $y
+   }
+   for {set i 1; set j 2; set k 0} {$i <= $n} {incr i; incr j; incr k} {
+      set area [expr {$area + ([lindex $xList $i] * ([lindex $yList $j] - [lindex $yList $k]))}]
+   }
+   set result [expr {$area/2.0}]
+   return [expr abs($result)]
+ }
 

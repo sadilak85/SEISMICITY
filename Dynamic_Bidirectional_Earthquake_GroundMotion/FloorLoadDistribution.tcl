@@ -27,58 +27,69 @@ for {set k 0} {$k <= [expr [lindex $NStory $numInFile]-1]} {incr k 1} {;	#first 
 	set maxZ 0.0
 	set exteriornodestmp2 ""
 	set exteriornodesIDtmp ""
-	lappend exteriornodestmp2 [lindex $ifloornodes $numInFile $k]
-	set maxX [lindex $exteriornodestmp2 $numInFile 0 1]
-	set maxZ [lindex $exteriornodestmp2 $numInFile 0 3]
+	set maxX [lindex $ifloornodes $numInFile 0 1]
+	set maxZ [lindex $ifloornodes $numInFile 0 3]
 	for {set i 0} {$i <= [expr [lindex $nodecount $k]-1]} {incr i 1} {
-		if {$maxX <= [lindex $exteriornodestmp2 $numInFile $i 1]} {
-			set maxX [lindex $exteriornodestmp2 $numInFile $i 1]
+		if {$maxX <= [lindex $ifloornodes $numInFile $i 1]} {
+			set maxX [lindex $ifloornodes $numInFile $i 1]
 		}
-		if {$maxZ <= [lindex $exteriornodestmp2 $numInFile $i 3]} {
-			set maxZ [lindex $exteriornodestmp2 $numInFile $i 3]
+		if {$maxZ <= [lindex $ifloornodes $numInFile $i 3]} {
+			set maxZ [lindex $ifloornodes $numInFile $i 3]
 		}		
 	}
-	set minX [lindex $exteriornodestmp2 $numInFile 0 1]
-	set minZ [lindex $exteriornodestmp2 $numInFile 0 3]
+	set minX [lindex $ifloornodes $numInFile 0 1]
+	set minZ [lindex $ifloornodes $numInFile 0 3]
 	for {set i 0} {$i <= [expr [lindex $nodecount $k]-1]} {incr i 1} {
-		if {$minX > [lindex $exteriornodestmp2 $numInFile $i 1]} {
-			set minX [lindex $exteriornodestmp2 $numInFile $i 1]
+		if {$minX > [lindex $ifloornodes $numInFile $i 1]} {
+			set minX [lindex $ifloornodes $numInFile $i 1]
 		}
-		if {$minZ > [lindex $exteriornodestmp2 $numInFile $i 3]} {
-			set minZ [lindex $exteriornodestmp2 $numInFile $i 3]
-		}		
+		if {$minZ > [lindex $ifloornodes $numInFile $i 3]} {
+			set minZ [lindex $ifloornodes $numInFile $i 3]
+		}
 	}
 	for {set i 0} {$i <= [expr [lindex $nodecount $k]-1]} {incr i 1} {
-		if {$minX == [lindex $exteriornodestmp2 $numInFile $i 1]} {
-			set exteriornodesIDtmp [lindex $exteriornodestmp2 $numInFile $i 0]
+		if {$minX == [lindex $ifloornodes $numInFile $i 1]} {
+			set exteriornodesIDtmp [lindex $ifloornodes $numInFile $i 0]
 		}
-		if {$maxX == [lindex $exteriornodestmp2 $numInFile $i 1]} {
-			set exteriornodesIDtmp [lindex $exteriornodestmp2 $numInFile $i 0]
+		if {$maxX == [lindex $ifloornodes $numInFile $i 1]} {
+			set exteriornodesIDtmp [lindex $ifloornodes $numInFile $i 0]
 		}
-		if {$minZ == [lindex $exteriornodestmp2 $numInFile $i 3]} {
-			set exteriornodesIDtmp [lindex $exteriornodestmp2 $numInFile $i 0]
+		if {$minZ == [lindex $ifloornodes $numInFile $i 3]} {
+			set exteriornodesIDtmp [lindex $ifloornodes $numInFile $i 0]
 		}
-		if {$maxZ == [lindex $exteriornodestmp2 $numInFile $i 3]} {
-			set exteriornodesIDtmp [lindex $exteriornodestmp2 $numInFile $i 0]
+		if {$maxZ == [lindex $ifloornodes $numInFile $i 3]} {
+			set exteriornodesIDtmp [lindex $ifloornodes $numInFile $i 0]
 		}
 	}
 	for {set i 0} {$i <= [expr [lindex $nodecount $k]-1]} {incr i 1} {; 	#search loop for exterior elements
 		for {set j 0} {$j <= [expr [llength [lindex $iBeamConnect $numInFile]]-1]} {incr j 1} {
 			for {set k 0} {$k <= [expr [llength [lindex $iGirderConnect $numInFile]]-1]} {incr k 1} {
-				if {$exteriornodesIDtmp == [lindex $iBeamConnect $numInFile $j 0]} {
+				if {$exteriornodesIDtmp == [lindex $iBeamConnect $numInFile $j 1]} {
+					lappend beamnode1 [lindex $iBeamConnect $numInFile $i 1]
+					set beamnode2 [lindex $iBeamConnect $numInFile $i 2]
+					set checkbeam 1
+				} elseif {$exteriornodesIDtmp == [lindex $iGirderConnect $numInFile $j 1]} {
+					set beamnode1 [lindex $iGirderConnect $numInFile $i 1]
+					set beamnode2 [lindex $iGirderConnect $numInFile $i 2]
+					set checkbeam 1
+				}
+				if {$exteriornodesIDtmp == [lindex $iBeamConnect $numInFile $j 2]} {
 					set beamnode1 [lindex $iBeamConnect $numInFile $i 1]
 					set beamnode2 [lindex $iBeamConnect $numInFile $i 2]
+					set checkbeam 1
+				} elseif {$exteriornodesIDtmp == [lindex $iGirderConnect $numInFile $j 2]} {
+					set beamnode1 [lindex $iGirderConnect $numInFile $i 1]
+					set beamnode2 [lindex $iGirderConnect $numInFile $i 2]
 					set checkbeam 1
 				}
 			}
 		}
-	
-	
 	}
-	
 	lappend exteriornodesID $exteriornodesIDtmp
 	lappend aNBayZ [expr [llength [lindex $exteriorGirdernodesID $k]]/2-1]
-	lappend aNFrame [expr [llength [lindex $exteriorGirdernodesID $k]]/2]
+	#lappend aNFrame [expr [llength [lindex $exteriorGirdernodesID $k]]/2]
+	lappend aNFrame 2.0
+	puts aNFrame$aNFrame
 }
 lappend iexteriornodesID $exteriornodesID; # outermost nodes per floor each building
 lappend iexteriorGirdernodesID $exteriorGirdernodesID
@@ -86,16 +97,8 @@ lappend iexteriorBeamnodesID $exteriorBeamnodesID
 lappend NBayZ $aNBayZ; #NBAYZ		# number of bays in Z direction
 lappend NFrame $aNFrame;	# actually deal with frames in Z direction, as this is an easy extension of the 2d model
 
+#set NFrame {{2 2 2}}
 
-
-
-
-
-
-
-
-set NFrame {{2 2 2}}
-puts NFrame$NFrame
 
 # -----------------  Floor Slabs Total Weight ------------------------------------------------------
 #
@@ -156,8 +159,7 @@ puts NFrame$NFrame
 
 
 # Driver program to test above function 
-set X {0 2 4}
-set Y {1 3 7} 
-set n [llength $X]
-puts Polygonarea[polygonArea $X $Y $n]
+#set coords {-1 0 0 1 0 -1 1 0 0 0}
+
+#puts Polygonarea[polygonArea $coords]
 
