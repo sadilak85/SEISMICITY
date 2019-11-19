@@ -108,6 +108,5 @@ set NStorytmp 0
 	}
 	
 #
-	puts "Number of Stories in Y: $NStorytmp and Number of Frames in each floor: $NFrame"
 #
 #
