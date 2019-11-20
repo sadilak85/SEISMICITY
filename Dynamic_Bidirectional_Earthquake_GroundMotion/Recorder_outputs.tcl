@@ -42,10 +42,18 @@
 		recorder Element -file $dataDir/DefoEle_sec_1_$aFirstColumn$_aBID.out -time -ele $aFirstColumn section 1 deformation;	# section deformations, axial and curvature, node i
 		recorder Element -file $dataDir/ForceEle_sec$_numIntgrPts_$aFirstColumn$_aBID.out -time -ele $aFirstColumn section $numIntgrPts force;	# section forces, axial and moment, node j
 		recorder Element -file $dataDir/DefoEle_sec$_numIntgrPts_$aFirstColumn$_aBID.out -time -ele $aFirstColumn section $numIntgrPts deformation;# section deformations, axial and curvature, node j
-		set yFiber [expr $HCol/2-$cover];		# fiber location for stress-strain recorder, local coords
-		set zFiber [expr $BCol/2-$cover];		# fiber location for stress-strain recorder, local coords
-		recorder Element -file $dataDir/StressStrain_concEle_sec_1_$aFirstColumn$_aBID.out -time -ele $aFirstColumn section $numIntgrPts fiber $yFiber $zFiber $IDconcCore  stressStrain;	# Core Concrete stress-strain, node i
-		recorder Element -file $dataDir/StressStrain_reinfEle_sec_1_$aFirstColumn$_aBID.out -time -ele $aFirstColumn section $numIntgrPts fiber $yFiber $zFiber $IDSteel  stressStrain;	# steel fiber stress-strain, node i
+
+		if {$RCSection=="True"} {
+			set yFiber [expr $HCol/2-$cover];		# fiber location for stress-strain recorder, local coords
+			set zFiber [expr $BCol/2-$cover];		# fiber location for stress-strain recorder, local coords
+			recorder Element -file $dataDir/StressStrain_concEle_sec_1_$aFirstColumn$_aBID.out -time -ele $aFirstColumn section $numIntgrPts fiber $yFiber $zFiber $IDconcCore  stressStrain;	# Core Concrete stress-strain, node i
+			recorder Element -file $dataDir/StressStrain_reinfEle_sec_1_$aFirstColumn$_aBID.out -time -ele $aFirstColumn section $numIntgrPts fiber $yFiber $zFiber $IDSteel  stressStrain;	# steel fiber stress-strain, node i
+		}
+		if {$WSection=="True"} {
+			set yFiber [expr 0.];								# fiber location for stress-strain recorder, local coords
+			set zFiber [expr 0.];								# fiber location for stress-strain recorder, local coords
+			recorder Element -file $dataDir/StressStrain_reinfEle_sec_1_$aFirstColumn$_aBID.out -time -ele $aFirstColumn section $numIntgrPts fiber $yFiber $zFiber stressStrain;	# steel fiber stress-strain, node i
+		}
 	}
 	recorder Element -file $dataDir/ForceEletest_220020101.out -time -ele 220020101 localForce;				# element forces in local coordinates
 	

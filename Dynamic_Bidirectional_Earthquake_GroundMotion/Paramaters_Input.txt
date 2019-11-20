@@ -7,6 +7,20 @@ c:/Users/gw00161333/SEISMICITY/Bidirectional_Earthquake_GroundMotion/GMfiles/H-E
 #Simulation type: Dynamic or Static Pushover:
 Dynamic
 #Maximum duration for simulation in seconds:
-10.
+5
 #Number of modes in Modal Analysis:
 3
+#RC Section
+True
+#Square-Column section width in inches:
+18
+#Beam depth -- perpendicular to bending axis in inches:
+24
+#Beam width -- parallel to bending axis in inches:
+18
+#Girder depth -- perpendicular to bending axis in inches:
+24
+#Girder width -- parallel to bending axis in inches:
+18
+#W Section
+False

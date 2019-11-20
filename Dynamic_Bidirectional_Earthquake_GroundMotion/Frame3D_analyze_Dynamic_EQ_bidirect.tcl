@@ -12,8 +12,15 @@ source ReadSMDfile.tcl;		# procedure for reading GM file and converting it to pr
 source LibUnits.tcl;			# define units (kip-in-sec)
 source DisplayPlane.tcl;		# procedure for displaying a plane in model
 source DisplayModel3D.tcl;		# procedure for displaying 3D perspectives of model
-source BuildRCrectSection.tcl;		# procedure for definining RC fiber section
 source AreaPolygon.tcl
+# Define SECTIONS -------------------------------------------------------------
+set SectionType FiberSection;		# options: Elastic FiberSection
+if {$RCSection=="True"} {
+	source BuildRCrectSection.tcl;		# procedure for definining RC fiber section
+}
+if {$WSection=="True"} {
+	source Wsection.tcl; # procedure for definining steel W section
+}
 #
 # Bidirectional Uniform Earthquake ground motion (uniform acceleration input at all support nodes)
 set iGMdirection "1 3";			# ground-motion direction
@@ -31,9 +38,6 @@ set outputFilename $inputFoldername
 set dataDir outputs/$outputFilename;			# set up name of data directory
 file mkdir "$dataDir"; 			# create data directory
 #
-# Define SECTIONS -------------------------------------------------------------
-set SectionType FiberSection;		# options: Elastic FiberSection
-#
 set RigidDiaphragm ON ;		# options: ON, OFF. specify this before the analysis parameters are set the constraints are handled differently.
 set perpDirn 2;				# perpendicular to plane of rigid diaphragm
 set numIntgrPts 5;
@@ -46,8 +50,12 @@ set BeamSecTagFiber 5
 set GirdSecTagFiber 6
 set SecTagTorsion 70
 # ---------------------- Define SECTIONs --------------------------------
-source SectionProperties.tcl
-#
+if {$RCSection=="True"} {
+	source RCrectSectionProperties.tcl
+}
+if {$WSection=="True"} {
+	source WSectionProperties.tcl
+}
 # ---------------------   Input File Names List  -----------------------------------------------------
 set Buildingnum 0; # initialize the total number of buildings
 set ainputFilename ""
@@ -69,7 +77,7 @@ puts "Model Built"
 
 #
 # -------------------------  MODAL ANALYSIS  ---------------------------------------------------
-source ModalAnalysis.tcl
+#source ModalAnalysis.tcl
 #
 # ---------------------   CREATE OUTPUT FILES  -----------------------------------------------------
 for {set numInFile 0} {$numInFile <= [expr $Buildingnum-1]} {incr numInFile 1} {
@@ -120,16 +128,16 @@ set KcommSwitch 1.0;
 set KinitSwitch 0.0;
 set nEigenI 1;		# mode 1
 set nEigenJ 3;		# mode 3
-set lambdaN [eigen [expr $nEigenJ]];			# eigenvalue analysis for nEigenJ modes
-set lambdaI [lindex $lambdaN [expr $nEigenI-1]]; 		# eigenvalue mode i
-set lambdaJ [lindex $lambdaN [expr $nEigenJ-1]]; 	# eigenvalue mode j
-set omegaI [expr pow($lambdaI,0.5)];
-set omegaJ [expr pow($lambdaJ,0.5)];
-set alphaM [expr $MpropSwitch*$xDamp*(2*$omegaI*$omegaJ)/($omegaI+$omegaJ)];	# M-prop. damping; D = alphaM*M
-set betaKcurr [expr $KcurrSwitch*2.*$xDamp/($omegaI+$omegaJ)];         		# current-K;      +beatKcurr*KCurrent
-set betaKcomm [expr $KcommSwitch*2.*$xDamp/($omegaI+$omegaJ)];   		# last-committed K;   +betaKcomm*KlastCommitt
-set betaKinit [expr $KinitSwitch*2.*$xDamp/($omegaI+$omegaJ)];         			# initial-K;     +beatKinit*Kini
-rayleigh $alphaM $betaKcurr $betaKinit $betaKcomm; 				# RAYLEIGH damping
+#set lambdaN [eigen [expr $nEigenJ]];			# eigenvalue analysis for nEigenJ modes
+#set lambdaI [lindex $lambdaN [expr $nEigenI-1]]; 		# eigenvalue mode i
+#set lambdaJ [lindex $lambdaN [expr $nEigenJ-1]]; 	# eigenvalue mode j
+#set omegaI [expr pow($lambdaI,0.5)];
+#set omegaJ [expr pow($lambdaJ,0.5)];
+#set alphaM [expr $MpropSwitch*$xDamp*(2*$omegaI*$omegaJ)/($omegaI+$omegaJ)];	# M-prop. damping; D = alphaM*M
+#set betaKcurr [expr $KcurrSwitch*2.*$xDamp/($omegaI+$omegaJ)];         		# current-K;      +beatKcurr*KCurrent
+#set betaKcomm [expr $KcommSwitch*2.*$xDamp/($omegaI+$omegaJ)];   		# last-committed K;   +betaKcomm*KlastCommitt
+#set betaKinit [expr $KinitSwitch*2.*$xDamp/($omegaI+$omegaJ)];         			# initial-K;     +beatKinit*Kini
+#rayleigh $alphaM $betaKcurr $betaKinit $betaKcomm; 				# RAYLEIGH damping
 
 #  ---------------------------------    perform Dynamic Ground-Motion Analysis
 # the following commands are unique to the Uniform Earthquake excitation
