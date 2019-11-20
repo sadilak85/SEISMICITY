@@ -1,18 +1,20 @@
+#
+#	START THE SIMULATION
+#
+# Read Input Parameters File first:
+source ReadParameters.tcl
+
 
 while 1 {
-	puts "Which analysis do you prefer? <D> Dynamic Excitation / <S> Static Pushover "
-    flush stdout;    # <<<<<<<< IMPORTANT!
-	gets stdin word
-
-	if {[string tolower $word] == "d"} {
+	if {[string match $typesim "Dynamic"] == 1} {
 		puts "Dynamic Analysis has been selected..."
 		puts ""
 		source Frame3D_analyze_Dynamic_EQ_bidirect.tcl
         break
-    } elseif {[string tolower $word] == "s"} {
+    } elseif {[string match $typesim "Static Pushover"] == 1} {
 		puts "Static Pushover Analysis has been selected..."
 		puts ""
+		source Frame3D_analyze_Static_Pushover.tcl
         break
     }
-    puts "Please respond with D for Dynamic Analysis or S for Static Pushover"
 }

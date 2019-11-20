@@ -73,6 +73,7 @@ lappend iBeamConnect $BeamConnect
 lappend iGirderConnect $GirderConnect
 lappend iColumnConnect $ColumnConnect
 
+
 # --------- Take all Node ID's with their coordinates from INPUT FILE ---------						
    if [catch {open [lindex $ainputFilename $numInFile 0] r} inFileID] {
       puts stderr "Cannot open input file"
@@ -424,4 +425,4 @@ for {set k 0} {$k <= [expr [llength [lindex $iColumnConnect $numInFile]]-1]} {in
 	geomTransf $ColTransfType [lindex $IDColTransf $numInFile $k 0] $vecxzX $vecxzY $vecxzZ
 }
 #
-#		
+#

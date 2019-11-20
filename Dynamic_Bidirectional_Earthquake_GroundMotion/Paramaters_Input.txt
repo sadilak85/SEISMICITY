@@ -1,0 +1,26 @@
+#Input folder path:
+c:/Users/gw00161333/SEISMICITY/Bidirectional_Earthquake_GroundMotion/inputs/3Story_1Bay_1Bayz
+#Acceleration recording in lateral direction:
+c:/Users/gw00161333/SEISMICITY/Bidirectional_Earthquake_GroundMotion/GMfiles/H-E12140.at2
+#Acceleration recording in perpendicular direction:
+c:/Users/gw00161333/SEISMICITY/Bidirectional_Earthquake_GroundMotion/GMfiles/H-E01140.at2
+#Simulation type: Dynamic or Static Pushover:
+Dynamic
+#Maximum duration for simulation in seconds:
+5
+#Number of modes in Modal Analysis:
+3
+#RC Section
+True
+#Square-Column section width in inches:
+18
+#Beam depth -- perpendicular to bending axis in inches:
+24
+#Beam width -- parallel to bending axis in inches:
+18
+#Girder depth -- perpendicular to bending axis in inches:
+24
+#Girder width -- parallel to bending axis in inches:
+18
+#W Section
+False

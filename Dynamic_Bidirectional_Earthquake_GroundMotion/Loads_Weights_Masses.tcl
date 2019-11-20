@@ -7,73 +7,6 @@ set Tslab [expr 6*$in];			# 6-inch slab
 set DLfactor 1.0;				# scale dead load up a little
 set QdlGird $QGird; 			# dead load distributed along girder
 #
-# -----------------  Floor Slabs Total Weight ------------------------------------------------------
-# --- Not STARTED YET !!!!!!!!!
-# Take exterior nodes from "AssemblefromNodes" first
-# Exterior nodes will be corrected there first
-#
-#if [catch {open [lindex $ainputFilename $numInFile 0] r} inFileID] {
-#	puts stderr "Cannot open input file for reading nodal weights"
-#} else {
-#  set flag 1
-#	set floorcounter 0
-#	set nodecounttmp 0
-#	set floornodes ""
-#	set nodecount ""
-#	foreach line [split [read $inFileID] \n] {
-#		if {[llength $line] == 0} {
-#			# Blank line --> do nothing
-#			continue
-#		} 
-#		if {$flag == 1} {
-#			foreach word [split $line] {
-#				if {[string match $word "#BUILDING"] == 1} {
-#					break
-#				}
-#				if {[string match $word "#GROUND"] == 1} {
-#					set flag2 1
-#					break
-#				}
-#				if {[string match $word "#FLOOR"] == 1 || [string match $word "#MASTERNODES"] == 1} {
-#					set flag2 0
-#					if {$floorcounter>0} {
-#						lappend floornodes $ifloornodestmp
-#						lappend nodecount $nodecounttmp
-#						set ifloornodestmp ""
-#						set nodecounttmp 0
-#					}
-#					set floorcounter [expr $floorcounter+1]
-#					
-#					if {[string match $word "#MASTERNODES"] == 1} {
-#						set flag2 1
-#					} 
-#					break
-#				} else {
-#				  if {$flag2 == 0} {
-#					set list [regexp -all -inline -- {[-+]?[0-9]*\.?[0-9]+} $line]
-#					foreach word [split $list] {
-#						lappend ifloornodestmp $list
-#						set nodecounttmp [expr $nodecounttmp+1]
-#						break
-#					}
-#					break
-#				  }
-#				}
-#			}; #end of split line 
-#		}
-#	}; #end of line read 
-#	close $inFileID
-#	}
-#	lappend ifloornodes $floornodes
-
-	
-# Driver program to test above function 
-set X {0 2 4}
-set Y {1 3 7} 
-set n [llength $X]
-puts Polygonarea[polygonArea $X $Y $n]
-
-
 #
 # ---------- Column Weights -----------------------
 	set WeightColtmp ""
@@ -241,7 +174,11 @@ if [catch {open [lindex $ainputFilename $numInFile 0] r} inFileID] {
 						}
 						set WeightNode $WeightNodetmp;   #actual weight for the Node
 						set MassNode [expr $WeightNode/$g];
-						mass $word $MassNode 0. $MassNode 0. 0. 0.;	 # define mass
+						if {[lindex $NStory $numInFile]==1} {
+							mass $word $MassNode 1e-9 $MassNode 0. 0. 0.;	 # define mass
+						} else {
+							mass $word $MassNode 0. $MassNode 0. 0. 0.;	 # define mass
+						}
 						lset aFloorWeight $numInFile [expr $floorcounter-1] [expr [lindex $aFloorWeight $numInFile [expr $floorcounter-1]] + $WeightNode];    
 						break
 					}
@@ -290,11 +227,11 @@ lset MassTotal $numInFile 1 [expr $WeightTotaltmp/$g]; # total mass for each bui
 
 
 set sumWiHitmp 0.0;		
-for {set i 1} {$i <= [lindex $NStory $numInFile]} {incr i 1} {
+#for {set i 1} {$i <= [lindex $NStory $numInFile]} {incr i 1} {
 	# sum of storey weight times height, for lateral-load distribution
-	set sumWiHitmp [expr $sumWiHitmp + [lindex $aFloorWeight $numInFile [expr $i-1]]*[lindex $FloorHeight $numInFile [expr $i-1]]]
-}
-lset sumWiHi $numInFile 1 $sumWiHitmp; 	# sum of storey weight times height, for lateral-load distribution
+#	set sumWiHitmp [expr $sumWiHitmp + [lindex $aFloorWeight $numInFile [expr $i-1]]*[lindex $FloorHeight $numInFile [expr $i-1]]]
+#}
+#lset sumWiHi $numInFile 1 $sumWiHitmp; 	# sum of storey weight times height, for lateral-load distribution
 
 # --------------------------------------------------------------------------------------------------------------------------------
 # LATERAL-LOAD distribution for static pushover analysis
@@ -304,28 +241,28 @@ lset sumWiHi $numInFile 1 $sumWiHitmp; 	# sum of storey weight times height, for
 set iFPush "";			#lateral load for pushover
 set iNodePush "";		# nodes for pushover/cyclic, vectorized
 set iFjtmp ""
-for {set i 1} {$i <= [lindex $NStory $numInFile]} {incr i 1} {
-	lappend iFjtmp 0
-}
-	lappend iFj $iFjtmp;   # per floor per building
+#for {set i 1} {$i <= [lindex $NStory $numInFile]} {incr i 1} {
+#	lappend iFjtmp 0
+#}
+#	lappend iFj $iFjtmp;   # per floor per building
 
-for {set j 0} {$j <=[expr [lindex $NStory $numInFile]-1]} {incr j 1} {	
-	set FloorWeight [lindex $iFloorWeight $numInFile 0 $j];
-	lset iFj $numInFile $j [expr $FloorWeight*[lindex $FloorHeight $numInFile $j]/[lindex $sumWiHi $numInFile 1]*[lindex $WeightTotal $numInFile 1]];		
-}
+#for {set j 0} {$j <=[expr [lindex $NStory $numInFile]-1]} {incr j 1} {	
+#	set FloorWeight [lindex $iFloorWeight $numInFile 0 $j];
+#	lset iFj $numInFile $j [expr $FloorWeight*[lindex $FloorHeight $numInFile $j]/[lindex $sumWiHi $numInFile 1]*[lindex $WeightTotal $numInFile 1]];		
+#}
 
 
-lappend iNodePush [lindex $iMasterNode $numInFile] ;		# nodes for pushover/cyclic, vectorized
-set iFPush $iFj;				# lateral load for pushover, vectorized for each building (list)
+#lappend iNodePush [lindex $iMasterNode $numInFile] ;		# nodes for pushover/cyclic, vectorized
+#set iFPush $iFj;				# lateral load for pushover, vectorized for each building (list)
 
-puts WeightTotal:$WeightTotal
-puts MassTotal:$MassTotal
-puts sumWiHi:$sumWiHi
-puts iFloorWeight:$iFloorWeight
-puts aFloorWeight:$aFloorWeight
-puts FloorHeight$FloorHeight
-puts FloorWeight$FloorWeight
-puts iFj$iFj
-puts iFPush$iFPush
+#puts WeightTotal:$WeightTotal
+#puts MassTotal:$MassTotal
+#puts sumWiHi:$sumWiHi
+#puts iFloorWeight:$iFloorWeight
+#puts aFloorWeight:$aFloorWeight
+#puts FloorHeight$FloorHeight
+#puts FloorWeight$FloorWeight
+#puts iFj$iFj
+#puts iFPush$iFPush
 #
 #

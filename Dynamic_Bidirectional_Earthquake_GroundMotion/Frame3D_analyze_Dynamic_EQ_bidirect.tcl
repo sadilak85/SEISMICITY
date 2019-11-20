@@ -6,39 +6,37 @@
 puts " -------------Uniaxial Inelastic Section, Nonlinear Model -------------"
 puts " -------------Uniform Earthquake Excitation -------------"
 puts " -------------Bidirectional GroundMotion -------------"
-
+#
 # source in procedures
 source ReadSMDfile.tcl;		# procedure for reading GM file and converting it to proper format
-
+source LibUnits.tcl;			# define units (kip-in-sec)
+source DisplayPlane.tcl;		# procedure for displaying a plane in model
+source DisplayModel3D.tcl;		# procedure for displaying 3D perspectives of model
+source AreaPolygon.tcl
+# Define SECTIONS -------------------------------------------------------------
+set SectionType FiberSection;		# options: Elastic FiberSection
+if {$RCSection=="True"} {
+	source BuildRCrectSection.tcl;		# procedure for definining RC fiber section
+}
+if {$WSection=="True"} {
+	source Wsection.tcl; # procedure for definining steel W section
+}
+#
 # Bidirectional Uniform Earthquake ground motion (uniform acceleration input at all support nodes)
-set iGMfile "H-E01140 H-E12140" ;		# ground-motion filenames, should be different files
 set iGMdirection "1 3";			# ground-motion direction
 set iGMfact "1.5 0.75";			# ground-motion scaling factor
 set dtInput 0.00500 ;		    # DT
-
+#
 # ------------  SET UP -------------------------------------------------------------------------
 wipe;				# clear memory of all past model definitions
 model BasicBuilder -ndm 3 -ndf 6;	# Define the model builder, ndm=#dimension, ndf=#dofs
-
-puts "Enter the folder name inside the input folder which includes simulation include files: "
-gets stdin inputFoldername
-set inputFilename "inputs/$inputFoldername/INPUT_"
-set InputDir inputs/$inputFoldername;			# set up name of input directory
+#
+set inputFilename "$inputFilepath/INPUT_"
+set InputDir $inputFilepath;			# set up name of input directory
 set FileExt ".tcl"
 set outputFilename $inputFoldername
 set dataDir outputs/$outputFilename;			# set up name of data directory
 file mkdir "$dataDir"; 			# create data directory
-set GMdir "GMfiles";		# ground-motion file directory
-source LibUnits.tcl;			# define units (kip-in-sec)
-source DisplayPlane.tcl;		# procedure for displaying a plane in model
-source DisplayModel3D.tcl;		# procedure for displaying 3D perspectives of model
-source BuildRCrectSection.tcl;		# procedure for definining RC fiber section
-source AreaPolygon.tcl
-
-set numModes 3; # decide the number of Modes in total for Modal Analysis
-#
-# Define SECTIONS -------------------------------------------------------------
-set SectionType FiberSection;		# options: Elastic FiberSection
 #
 set RigidDiaphragm ON ;		# options: ON, OFF. specify this before the analysis parameters are set the constraints are handled differently.
 set perpDirn 2;				# perpendicular to plane of rigid diaphragm
@@ -52,17 +50,25 @@ set BeamSecTagFiber 5
 set GirdSecTagFiber 6
 set SecTagTorsion 70
 # ---------------------- Define SECTIONs --------------------------------
-source SectionProperties.tcl
-#
-# ---------------------   INPUT DATA from FILE  -----------------------------------------------------
+if {$RCSection=="True"} {
+	source RCrectSectionProperties.tcl
+}
+if {$WSection=="True"} {
+	source WSectionProperties.tcl
+}
+# ---------------------   Input File Names List  -----------------------------------------------------
 set Buildingnum 0; # initialize the total number of buildings
 set ainputFilename ""
 source split_inputFileNames.tcl; # take file names, define number of buildings and take the building IDs
 #
 # ---------------------   CREATE THE MODEL  ----------------------------------------------------------
 for {set numInFile 0} {$numInFile <= [expr $Buildingnum-1]} {incr numInFile 1} {
- source Frame3D_Build_RC.tcl ;  			#inputing many building parameters
- source Loads_Weights_Masses.tcl; 		#Gravity, Nodal Weights, Lateral Loads, Masses
+	source Frame3D_Build_RC.tcl ;  			#inputing many building parameters
+}
+source Anglebtw.tcl
+for {set numInFile 0} {$numInFile <= [expr $Buildingnum-1]} {incr numInFile 1} {
+	source FloorLoadDistribution.tcl; 		# Dead Load Distribution on Floors among interior Frames with unknown slab geometries
+	source Loads_Weights_Masses.tcl; 		# Gravity, Nodal Weights, Lateral Loads, Masses
 }
 if {$Buildingnum>1} {
 	source Pounding_buildings.tcl
@@ -102,13 +108,9 @@ analyze $NstepGravity;		# apply gravity
 # ------------------------------------------------- maintain constant gravity loads and reset time to zero
 loadConst -time 0.0
 
-# Plot displacements -------------------------------------------------------------
-recorder plot $dataDir/Disp_FreeNodes$_aBID.out DisplDOF[lindex $iGMdirection 0] 1100 10 400 400 -columns  1 [expr 1+[lindex $iGMdirection 0]] ; # a window to plot the nodal displacements versus time
-recorder plot $dataDir/Disp_FreeNodes$_aBID.out DisplDOF[lindex $iGMdirection 1] 1100 410 400 400 -columns 1 [expr 1+[lindex $iGMdirection 1]] ; # a window to plot the nodal displacements versus time
 
 # set up ground-motion-analysis parameters
 set DtAnalysis	[expr 0.01*$sec];	# time-step Dt for lateral analysis
-set TmaxAnalysis	[expr 10. *$sec];	# maximum duration of ground-motion analysis -- should be 50*$sec
 
 # ----------- set up analysis parameters
 source LibAnalysisDynamicParameters.tcl;	# constraintsHandler,DOFnumberer,system-ofequations,convergenceTest,solutionAlgorithm,integrator
