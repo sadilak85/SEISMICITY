@@ -1,5 +1,7 @@
 #Input folder path:
-c:/Users/gw00161333/SEISMICITY/Bidirectional_Earthquake_GroundMotion/inputs/3Story_1Bay_1Bayz
+c:/Users/gw00161333/SEISMICITY/Bidirectional_Earthquake_GroundMotion/inputs/3Story_2Bay_2Bayz
+#Output folder path:
+c:/Users/gw00161333/SEISMICITY/Bidirectional_Earthquake_GroundMotion/outputs/3Story_2Bay_2Bayz
 #Acceleration recording in lateral direction:
 c:/Users/gw00161333/SEISMICITY/Bidirectional_Earthquake_GroundMotion/GMfiles/H-E12140.at2
 #Acceleration recording in perpendicular direction:
@@ -7,7 +9,7 @@ c:/Users/gw00161333/SEISMICITY/Bidirectional_Earthquake_GroundMotion/GMfiles/H-E
 #Simulation type: Dynamic or Static Pushover:
 Dynamic
 #Maximum duration for simulation in seconds:
-5
+10
 #Number of modes in Modal Analysis:
 3
 #RC Section

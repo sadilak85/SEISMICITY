@@ -16,6 +16,9 @@ if [catch {open $filename r} inFileID] {
 			if {[string match $line "#Input folder path:"] == 1} {
 				set flag "inputfolderpath"
 				continue
+			} elseif {[string match $line "#Output folder path:"] == 1} {
+				set flag "outputfolderpath"
+				continue
 			} elseif {[string match $line "#Acceleration recording in lateral direction:"] == 1} {
 				set flag "acceleration"
 				continue
@@ -54,8 +57,9 @@ if [catch {open $filename r} inFileID] {
 				continue 
 			}
 			if {[string match $flag "inputfolderpath"] == 1} {
-				set inputFoldername [lrange [file split $line] end end]
 				set inputFilepath $line
+			} elseif {[string match $flag "outputfolderpath"] == 1} {
+				set outputFilepath $line
 			} elseif {$flag == "acceleration"} {
 				set accfolder [lrange [file split $line] end-1 end-1]
 				set GMdir $accfolder;		# ground-motion file directory

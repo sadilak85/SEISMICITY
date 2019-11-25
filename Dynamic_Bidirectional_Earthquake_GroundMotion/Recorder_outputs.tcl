@@ -38,7 +38,7 @@ set MasterNodeLast [lindex $iMasterNode $numInFile [expr [llength [lindex $iMast
 
 # ------------------------------- Floor Beam IDs to output element RESULTs ------------------------------------------
 	set FloorBeamtmp ""
-	for {set i 0} {$i <= [expr [llength [lindex $LBeam $numInFile]]-1]} {incr i 1} {
+	for {set i 0} {$i <= [expr [llength [lindex $iBeamConnect $numInFile]]-1]} {incr i 1} {
 		lappend FloorBeamtmp [lindex $iBeamConnect $numInFile $i 0]
 	}
 	lappend FloorBeam $FloorBeamtmp
@@ -46,7 +46,7 @@ set MasterNodeLast [lindex $iMasterNode $numInFile [expr [llength [lindex $iMast
 # ------------------------------- Floor Girder IDs to output element RESULTs ------------------------------------------	
 
 	set FloorGirdertmp ""
-	for {set i 0} {$i <= [expr [llength [lindex $LGird $numInFile]]-1]} {incr i 1} {
+	for {set i 0} {$i <= [expr [llength [lindex $iGirderConnect $numInFile]]-1]} {incr i 1} {
 		lappend FloorGirdertmp [lindex $iGirderConnect $numInFile $i 0]
 	}
 	lappend FloorGirder $FloorGirdertmp
@@ -66,7 +66,7 @@ set MasterNodeLast [lindex $iMasterNode $numInFile [expr [llength [lindex $iMast
 	file mkdir "$sectDefoOutdir"
 	set ssOutdir $dataDir/Building_$aBID/StressStrain
 	file mkdir "$ssOutdir"
-	
+
 	recorder Node -file $dispOutdir/Disp_FreeNodes$_aBID.out -time -node [lindex $FreeNodeID $numInFile 0] -dof 1 2 3 disp; # displacements of free node
 	recorder Node -file $dispOutdir/Disp_MasterNodes$_aBID.out -time -nodeRange $MasterNodeFirst $MasterNodeLast -dof 1 2 3 disp;# displacements of master nodes
 	recorder Node -file $dispOutdir/Disp_BaseNodes$_aBID.out -time -nodeRange $SupportNodeFirst $SupportNodeLast -dof 1 2 3 disp;# displacements of support nodes
@@ -168,8 +168,4 @@ for {set i 0} {$i <= [expr [llength [lindex $FloorGirder $numInFile]]-1]} {incr 
 	}
 }
 #recorder Element -file $eleForcOutdir/ForceEletest_220020101.out -time -ele 220020101 localForce;				# element forces in local coordinates
-# Plot displacements -------------------------------------------------------------
-recorder plot $dispOutdir/Disp_FreeNodes$_aBID.out DisplDOF[lindex $iGMdirection 0] 1100 10 400 400 -columns  1 [expr 1+[lindex $iGMdirection 0]] ; # a window to plot the nodal displacements versus time
-recorder plot $dispOutdir/Disp_FreeNodes$_aBID.out DisplDOF[lindex $iGMdirection 1] 1100 410 400 400 -columns 1 [expr 1+[lindex $iGMdirection 1]] ; # a window to plot the nodal displacements versus time
-#
 #

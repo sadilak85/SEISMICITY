@@ -34,8 +34,7 @@ model BasicBuilder -ndm 3 -ndf 6;	# Define the model builder, ndm=#dimension, nd
 set inputFilename "$inputFilepath/INPUT_"
 set InputDir $inputFilepath;			# set up name of input directory
 set FileExt ".tcl"
-set outputFilename $inputFoldername
-set dataDir outputs/$outputFilename;			# set up name of data directory
+set dataDir $outputFilepath;			# set up name of data directory
 file mkdir "$dataDir"; 			# create data directory
 #
 set RigidDiaphragm ON ;		# options: ON, OFF. specify this before the analysis parameters are set the constraints are handled differently.
@@ -64,9 +63,9 @@ source split_inputFileNames.tcl; # take file names, define number of buildings a
 # ---------------------   CREATE THE MODEL  ----------------------------------------------------------
 for {set numInFile 0} {$numInFile <= [expr $Buildingnum-1]} {incr numInFile 1} {
 	source Frame3D_Build_RC.tcl ;  			#inputing many building parameters
-}
-source Anglebtw.tcl
-for {set numInFile 0} {$numInFile <= [expr $Buildingnum-1]} {incr numInFile 1} {
+	source Anglebtw.tcl
+	source nodeID2coordXZ.tcl
+	source ElementLengths.tcl
 	source FloorLoadDistribution.tcl; 		# Dead Load Distribution on Floors among interior Frames with unknown slab geometries
 	source Loads_Weights_Masses.tcl; 		# Gravity, Nodal Weights, Lateral Loads, Masses
 }
@@ -107,8 +106,10 @@ analyze $NstepGravity;		# apply gravity
 
 # ------------------------------------------------- maintain constant gravity loads and reset time to zero
 loadConst -time 0.0
-
-
+# Plot displacements -------------------------------------------------------------
+recorder plot $dispOutdir/Disp_FreeNodes$_aBID.out DisplDOF[lindex $iGMdirection 0] 1100 10 400 400 -columns  1 [expr 1+[lindex $iGMdirection 0]] ; # a window to plot the nodal displacements versus time
+recorder plot $dispOutdir/Disp_FreeNodes$_aBID.out DisplDOF[lindex $iGMdirection 1] 1100 410 400 400 -columns 1 [expr 1+[lindex $iGMdirection 1]] ; # a window to plot the nodal displacements versus time
+#
 # set up ground-motion-analysis parameters
 set DtAnalysis	[expr 0.01*$sec];	# time-step Dt for lateral analysis
 
