@@ -110,9 +110,7 @@ loadConst -time 0.0
 recorder plot $dispOutdir/Disp_FreeNodes$_aBID.out DisplDOF[lindex $iGMdirection 0] 1100 10 400 400 -columns  1 [expr 1+[lindex $iGMdirection 0]] ; # a window to plot the nodal displacements versus time
 recorder plot $dispOutdir/Disp_FreeNodes$_aBID.out DisplDOF[lindex $iGMdirection 1] 1100 410 400 400 -columns 1 [expr 1+[lindex $iGMdirection 1]] ; # a window to plot the nodal displacements versus time
 #
-# set up ground-motion-analysis parameters
-set DtAnalysis	[expr 0.01*$sec];	# time-step Dt for lateral analysis
-
+#
 # ----------- set up analysis parameters
 source LibAnalysisDynamicParameters.tcl;	# constraintsHandler,DOFnumberer,system-ofequations,convergenceTest,solutionAlgorithm,integrator
 
