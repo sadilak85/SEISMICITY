@@ -130,7 +130,7 @@ for {set i 0} {$i <= [expr [lindex $NStory $numInFile]-1]} {incr i 1} {
 		set elementid [lindex $iBeams_Floor $numInFile $i $j]
 		set percentdistrib [PercentEltLength $elementid $NStory $iElements_Floor $iTotalLenElts $iNodeList $iElementConnect $numInFile]
 		set selfload [expr $GammaConcrete*$Tslab*$afloorarea]
-		set totalload [expr $LiveLoad + $selfload]; # Add live loads to floor weight, i.e. furniture etc. 
+		set totalload [expr $LiveLoad + $selfload]; # Add live loads to floor weight, i.e. furniture etc.  --> Ib/ft2
 		set totalloadperlength [expr $percentdistrib*$totalload]
 		lappend QBeamSlabtmp $totalloadperlength; # Distribute the Floor weight w.r.t. exterior Beam Lengths
 	}
@@ -138,7 +138,7 @@ for {set i 0} {$i <= [expr [lindex $NStory $numInFile]-1]} {incr i 1} {
 		set elementid [lindex $iGirders_Floor $numInFile $i $j]
 		set percentdistrib [PercentEltLength $elementid $NStory $iElements_Floor $iTotalLenElts $iNodeList $iElementConnect $numInFile]
 		set selfload [expr $GammaConcrete*$Tslab*$afloorarea]
-		set totalload [expr $LiveLoad + $selfload]; # Add live loads to floor weight, i.e. furniture etc. 
+		set totalload [expr $LiveLoad + $selfload]; # Add live loads to floor weight, i.e. furniture etc. --> Ib/ft2
 		set totalloadperlength [expr $percentdistrib*$totalload]
 		lappend QGirderSlabtmp $totalloadperlength; # Distribute the Floor weight w.r.t. exterior Girder Lengths
 	}
