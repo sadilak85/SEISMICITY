@@ -24,7 +24,7 @@ set AllelementsLast [lindex $iElementwColumns $numInFile [expr [llength [lindex 
 	file mkdir "$Outdir"
 	
 #For displaying purpose:
-recorder Node -file $Outdir/Disp_FreeNodes$_aBID.out -time -node [lindex $FreeNodeID $numInFile 0] -dof 1 2 3 disp; # displacements of free node
+#recorder Node -file $Outdir/Disp_FreeNodes$_aBID.out -time -node [lindex $FreeNodeID $numInFile 0] -dof 1 2 3 disp; # displacements of free node
 # -------------------------------  Node RESULTs ------------------------------------------
 recorder Node -file $Outdir/Displacement_AllNodes$_aBID.out -time -nodeRange $AllnodesFirst $AllnodesLast -dof 1 2 3 disp;# displacements of All Nodes
 recorder Node -file $Outdir/Reaction_AllNodes$_aBID.out -time -nodeRange $AllnodesFirst $AllnodesLast -dof 1 2 3 reaction;	# support reaction
