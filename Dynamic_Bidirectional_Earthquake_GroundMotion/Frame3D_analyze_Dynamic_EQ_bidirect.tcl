@@ -78,12 +78,13 @@ puts "Model Built"
 # -------------------------  MODAL ANALYSIS  ---------------------------------------------------
 source ModalAnalysis.tcl
 #
+source CreateIDFile.tcl
 # ---------------------   CREATE OUTPUT FILES  -----------------------------------------------------
 for {set numInFile 0} {$numInFile <= [expr $Buildingnum-1]} {incr numInFile 1} {
 	source Recorder_outputs.tcl
 }
 # Define DISPLAY -------------------------------------------------------------
-DisplayModel3D DeformedShape ;	 # options: DeformedShape NodeNumbers ModeShape
+#DisplayModel3D DeformedShape ;	 # options: DeformedShape NodeNumbers ModeShape
 #
 # ---------------------  GRAVITY LOADS  -----------------------------------------------------
 source Gravity.tcl
@@ -107,8 +108,8 @@ analyze $NstepGravity;		# apply gravity
 # ------------------------------------------------- maintain constant gravity loads and reset time to zero
 loadConst -time 0.0
 # Plot displacements -------------------------------------------------------------
-recorder plot $dispOutdir/Disp_FreeNodes$_aBID.out DisplDOF[lindex $iGMdirection 0] 1100 10 400 400 -columns  1 [expr 1+[lindex $iGMdirection 0]] ; # a window to plot the nodal displacements versus time
-recorder plot $dispOutdir/Disp_FreeNodes$_aBID.out DisplDOF[lindex $iGMdirection 1] 1100 410 400 400 -columns 1 [expr 1+[lindex $iGMdirection 1]] ; # a window to plot the nodal displacements versus time
+#recorder plot $Outdir/Disp_FreeNodes$_aBID.out DisplDOF[lindex $iGMdirection 0] 1100 10 400 400 -columns  1 [expr 1+[lindex $iGMdirection 0]] ; # a window to plot the nodal displacements versus time
+#recorder plot $Outdir/Disp_FreeNodes$_aBID.out DisplDOF[lindex $iGMdirection 1] 1100 410 400 400 -columns 1 [expr 1+[lindex $iGMdirection 1]] ; # a window to plot the nodal displacements versus time
 #
 #
 # ----------- set up analysis parameters

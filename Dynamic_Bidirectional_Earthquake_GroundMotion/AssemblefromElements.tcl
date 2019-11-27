@@ -23,6 +23,7 @@
 	  set GirderConnect ""
 	  set ColumnConnect ""
 	  set ElementConnect ""
+	  set ElementwColumns ""
       foreach line [split [read $inFileID] \n] {
          if {[llength $line] == 0} {
             # Blank line --> do nothing
@@ -41,6 +42,7 @@
 						}
 						lappend BeamConnect $BeamConnecttmp
 						lappend ElementConnect $BeamConnecttmp
+						lappend ElementwColumns $BeamConnecttmp
 					}
 					if {[string match $word "girder"] == 1} {
 						set list [regexp -all -inline -- {[-+]?[0-9]*\.?[0-9]+} $line]
@@ -50,6 +52,7 @@
 						}
 						lappend GirderConnect $GirderConnecttmp
 						lappend ElementConnect $GirderConnecttmp
+						lappend ElementwColumns $GirderConnecttmp
 					}
 					if {[string match $word "column"] == 1} {
 						set list [regexp -all -inline -- {[-+]?[0-9]*\.?[0-9]+} $line]
@@ -58,6 +61,7 @@
 							lappend ColumnConnecttmp $ColumnConnecttmp2
 						}
 						lappend ColumnConnect $ColumnConnecttmp
+						lappend ElementwColumns $ColumnConnecttmp
 					}
 				}
 			}
@@ -76,6 +80,7 @@ lappend iBeamConnect $BeamConnect
 lappend iGirderConnect $GirderConnect
 lappend iColumnConnect $ColumnConnect
 lappend iElementConnect $ElementConnect; 	# Beam+Girder (required for "Polygon Area" purposes)
+lappend iElementwColumns $ElementwColumns; 	# Beam+Girder+Column (required for output purposes)
 #
 # ------------------- BEAM IDs at each floor ------------------------------------------------
 # Beams are seperated by which floor
