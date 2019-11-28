@@ -69,20 +69,17 @@ for {set numInFile 0} {$numInFile <= [expr $Buildingnum-1]} {incr numInFile 1} {
 	source FloorLoadDistribution.tcl; 		# Dead Load Distribution on Floors among interior Frames with unknown slab geometries
 	source Loads_Weights_Masses.tcl; 		# Gravity, Nodal Weights, Lateral Loads, Masses
 }
+source CreateIDFile.tcl
+source Recorder_outputs.tcl;	# OUTPUT RESULTS
+# -----------------	POUNDING -----------------
 if {$Buildingnum>1} {
 	source Pounding_buildings.tcl
 }
-puts "Model Built"
-
 #
 # -------------------------  MODAL ANALYSIS  ---------------------------------------------------
-source ModalAnalysis.tcl
+source ModalAnalysis.tcl;	#Modal Analysis and Output here
+
 #
-source CreateIDFile.tcl
-# ---------------------   CREATE OUTPUT FILES  -----------------------------------------------------
-for {set numInFile 0} {$numInFile <= [expr $Buildingnum-1]} {incr numInFile 1} {
-	source Recorder_outputs.tcl
-}
 # Define DISPLAY -------------------------------------------------------------
 #DisplayModel3D DeformedShape ;	 # options: DeformedShape NodeNumbers ModeShape
 #

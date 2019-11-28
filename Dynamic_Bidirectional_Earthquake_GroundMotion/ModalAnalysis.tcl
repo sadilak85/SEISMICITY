@@ -22,21 +22,11 @@ foreach lam $lambda {
 #DisplayModel3D ModeShape ;	 # options: DeformedShape NodeNumbers ModeShape
 
 # -------------------------------------------------------------
-for {set numInFile 0} {$numInFile <= [expr $Buildingnum-1]} {incr numInFile 1} {
-	set SupportNodeFirst [lindex $iSupportNode $numInFile 0];						# ID: first support node
-	set aBID [lindex $BID $numInFile]; # assign Building number
-	set _aBID "_Building_$aBID"
 	
-	set AllnodesFirst [lindex $iNodeList $numInFile 0 0]
-	set AllnodesLast [lindex $iNodeList $numInFile [expr [llength [lindex $iNodeList $numInFile]]-1] 0]
 
-	# set up name of data directory and create the folder
-	set modedir $dataDir/Building_$aBID/ModalAnalysis
-	file mkdir "$modedir"
-	
-	for { set k 1 } { $k <= $numModes } { incr k } {
-		recorder Node -file [format "$modedir/mode%i_AllNodes$_aBID.out" $k] -nodeRange $AllnodesFirst $AllnodesLast -dof 1 2 3  "eigen $k"
-	}
+for {set numInFile 0} {$numInFile <= [expr $Buildingnum-1]} {incr numInFile 1} {
+	set aBID [lindex $BID $numInFile]; # assign Building number
+	#set _aBID "_Building_$aBID"
 	puts "eigenfrequencies of the Building $aBID are $f"
 	puts "periods of the Building $aBID are $T"
 }

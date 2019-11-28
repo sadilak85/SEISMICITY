@@ -302,14 +302,14 @@ for {set j 0} {$j <=[expr [lindex $NStory $numInFile]-1]} {incr j 1} {
 lappend iNodePush [lindex $iMasterNode $numInFile] ;		# nodes for pushover/cyclic, vectorized
 set iFPush $iFj;				# lateral load for pushover, vectorized for each building (list)
 
-puts WeightTotal:$WeightTotal
-puts MassTotal:$MassTotal
-puts sumWiHi:$sumWiHi
-puts iFloorWeight:$iFloorWeight
-puts aFloorWeight:$aFloorWeight
-puts FloorHeight$FloorHeight
-puts FloorWeight$FloorWeight
-puts iFj$iFj
-puts iFPush$iFPush
+#puts WeightTotal:$WeightTotal
+#puts MassTotal:$MassTotal
+#puts sumWiHi:$sumWiHi
+#puts iFloorWeight:$iFloorWeight
+#puts aFloorWeight:$aFloorWeight
+#puts FloorHeight$FloorHeight
+#puts FloorWeight$FloorWeight
+#puts iFj$iFj
+#puts iFPush$iFPush
 #
 #
