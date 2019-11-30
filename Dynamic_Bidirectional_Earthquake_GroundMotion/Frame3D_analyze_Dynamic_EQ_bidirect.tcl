@@ -1,19 +1,20 @@
 # --------------------------------------------------------------------------------------------------
-# Example 8. Bidirectional Uniform Eartquake Excitation
-#                             Silvia Mazzoni & Frank McKenna, 2006
-# execute this file after you have built the model, and after you apply gravity
+#	DYNAMIC EARTHQUAKE ANALYSIS
+#	November 2019 S.Adilak
+# --------------------------------------------------------------------------------------------------
+# Modified, Enhanced, Developed from the Original setup of Opensees Example 8. 
+#		Bidirectional Uniform Eartquake Excitation - Silvia Mazzoni & Frank McKenna, 2006
 #
 puts " -------------Uniaxial Inelastic Section, Nonlinear Model -------------"
 puts " -------------Uniform Earthquake Excitation -------------"
 puts " -------------Bidirectional GroundMotion -------------"
 #
-# source in procedures
 source ReadSMDfile.tcl;		# procedure for reading GM file and converting it to proper format
 source LibUnits.tcl;			# define units (kip-in-sec)
 source DisplayPlane.tcl;		# procedure for displaying a plane in model
 source DisplayModel3D.tcl;		# procedure for displaying 3D perspectives of model
 source AreaPolygon.tcl
-# Define SECTIONS -------------------------------------------------------------
+# ------------------  Define SECTIONS ------------------------------------------------------
 set SectionType FiberSection;		# options: Elastic FiberSection
 if {$RCSection=="True"} {
 	source BuildRCrectSection.tcl;		# procedure for definining RC fiber section
@@ -21,7 +22,6 @@ if {$RCSection=="True"} {
 if {$WSection=="True"} {
 	source Wsection.tcl; # procedure for definining steel W section
 }
-#
 # Bidirectional Uniform Earthquake ground motion (uniform acceleration input at all support nodes)
 set iGMdirection "1 3";			# ground-motion direction
 set iGMfact "1.5 0.75";			# ground-motion scaling factor

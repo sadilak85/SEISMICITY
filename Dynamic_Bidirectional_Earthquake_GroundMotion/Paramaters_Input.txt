@@ -1,14 +1,14 @@
 #Input folder path:
-c:/Users/gw00161333/SEISMICITY/Bidirectional_Earthquake_GroundMotion/inputs/3Story_1Bay_1Bayz
+c:/Users/gw00161333/SEISMICITY/Bidirectional_Earthquake_GroundMotion/inputs/b_693985495
 #Output folder path:
-c:/Users/gw00161333/SEISMICITY/Bidirectional_Earthquake_GroundMotion/outputs/3Story_1Bay_1Bayz
+c:/Users/gw00161333/SEISMICITY/Bidirectional_Earthquake_GroundMotion/outputs/b_693985495
 #Acceleration recording in lateral direction:
 c:/Users/gw00161333/SEISMICITY/Bidirectional_Earthquake_GroundMotion/GMfiles/H-E12140.at2
 #Acceleration recording in perpendicular direction:
 c:/Users/gw00161333/SEISMICITY/Bidirectional_Earthquake_GroundMotion/GMfiles/H-E01140.at2
-#Simulation type: Dynamic or Static Pushover:
+#Simulation type: <Dynamic> or <Static> Pushover:
 Dynamic
-#Maximum duration for simulation in seconds:
+#Maximum duration for <Dynamic> simulation in seconds:
 1
 #Time step dt in seconds:
 0.01

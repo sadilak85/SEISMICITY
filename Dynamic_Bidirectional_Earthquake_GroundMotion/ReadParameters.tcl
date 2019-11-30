@@ -25,10 +25,10 @@ if [catch {open $filename r} inFileID] {
 			} elseif {[string match $line "#Acceleration recording in perpendicular direction:"] == 1} {
 				set flag "accelerationper"
 				continue
-			} elseif {[string match $line "#Simulation type: Dynamic or Static Pushover:"] == 1} {
+			} elseif {[string match $line "#Simulation type: <Dynamic> or <Static> Pushover:"] == 1} {
 				set flag "typesim"
 				continue 
-			} elseif {[string match $line "#Maximum duration for simulation in seconds:"] == 1} {
+			} elseif {[string match $line "#Maximum duration for <Dynamic> simulation in seconds:"] == 1} {
 				set flag "duration"
 				continue 
 			} elseif {[string match $line "#Time step dt in seconds:"] == 1} {

@@ -51,6 +51,7 @@ set tmpoutDataDir $dataDir/Displacement_AllNodes.out
 	append recorderstr $str$arg
 	puts $outFileforRecorder $recorderstr
 #
+if {$typesim=="Dynamic"} {
 for { set k 1 } { $k <= $numModes } { incr k } {
 	set tmpoutDataDir [format "$dataDir/mode%i_AllNodes.out" $k]
 		set recorderstr "recorder Node -file $tmpoutDataDir -node ";	# displacements of All Nodes
@@ -59,7 +60,7 @@ for { set k 1 } { $k <= $numModes } { incr k } {
 		puts $outFileforRecorder $recorderstr
 	#
 }
-
+}
 #recorder Node -file $dataDir/Displacement_AllNodes.out -time -nodeRange $AllnodesFirst $AllnodesLast -dof 1 2 3 disp;# displacements of All Nodes
 
 # -------------------------------  Element RESULTs ------------------------------------------
