@@ -119,7 +119,7 @@ for {set i 0} {$i <= [expr [lindex $NStory $numInFile]-1]} {incr i 1} {
 lappend iTotalAreaFloor $TotalAreaFloor
 
 #	Calculate the individual slab-like weights' lateral load distribution to the elements 
-puts iBeams_Floor$iBeams_Floor
+#puts iBeams_Floor$iBeams_Floor
 set QBeamSlab ""
 set QGirderSlab ""
 for {set i 0} {$i <= [expr [lindex $NStory $numInFile]-1]} {incr i 1} {
