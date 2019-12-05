@@ -4,7 +4,6 @@
 #
 #set contents [glob -directory  $InputDir "*.tcl"]
 set FileExt ".tcl"
-set ainputFilename ""
 set ainputFilename [findFiles $InputDir "INPUT_*"]
 set Buildingnum [llength $ainputFilename]
 
@@ -24,3 +23,5 @@ foreach kk $infiles {
 	set iFID [lindex $kk 0]
     lappend FID $iFID;	# File ID
 }
+
+set PoundingInputFileList [findFiles $InputDir "POUNDING_*"]; # additional files for Pounding 

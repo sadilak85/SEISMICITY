@@ -72,7 +72,8 @@ source CreateIDFile.tcl
 source Recorder_outputs.tcl;	# OUTPUT RESULTS
 # -----------------	POUNDING -----------------
 if {$Buildingnum>1} {
-	source Pounding_buildings.tcl
+	source PoundingParameters.tcl
+	source CreatePoundingNodesElements.tcl; # actually create Pounding Contacts
 }
 #
 # -------------------------  MODAL ANALYSIS  ---------------------------------------------------
