@@ -81,7 +81,7 @@ source ModalAnalysis.tcl;	#Modal Analysis and Output here
 
 #
 # Define DISPLAY -------------------------------------------------------------
-DisplayModel3D DeformedShape ;	 # options: DeformedShape NodeNumbers ModeShape
+#DisplayModel3D DeformedShape ;	 # options: DeformedShape NodeNumbers ModeShape
 #
 # ---------------------  GRAVITY LOADS  -----------------------------------------------------
 source Gravity.tcl

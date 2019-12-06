@@ -67,7 +67,7 @@ if {$Buildingnum>1} {
 }
 #
 # Define DISPLAY -------------------------------------------------------------
-DisplayModel3D DeformedShape ;	 # options: DeformedShape NodeNumbers ModeShape
+#DisplayModel3D DeformedShape ;	 # options: DeformedShape NodeNumbers ModeShape
 #
 # ---------------------  GRAVITY LOADS  -----------------------------------------------------
 source Gravity.tcl
