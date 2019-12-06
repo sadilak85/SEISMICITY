@@ -62,8 +62,8 @@ for {set numInFile 0} {$numInFile <= [expr $Buildingnum-1]} {incr numInFile 1} {
 source CreateIDFile.tcl
 source Recorder_outputs.tcl;	# OUTPUT RESULTS
 if {$Buildingnum>1} {
-	source PoundingParameters.tcl
-	source CreatePoundingNodesElements.tcl; # actually create Pounding Contacts
+	source CreatePoundingNodesElements.tcl
+	source CreatePoundingCommands.tcl; # actually create Pounding Contacts
 }
 #
 # Define DISPLAY -------------------------------------------------------------

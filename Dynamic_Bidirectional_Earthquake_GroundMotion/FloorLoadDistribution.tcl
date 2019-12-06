@@ -9,7 +9,7 @@
 #	by: Serhat Adilak, 2019
 #
 
-# --------------------------  Exterior Node IDs  ----------------------------------------  IGNORE HERE!!!!!!!! FAULT
+# --------------------------  Exterior Node IDs  --------------------------------------- NOW UNNECESSARY
 set exteriornodesID ""
 for {set k 0} {$k <= [expr [lindex $NStory $numInFile]-1]} {incr k 1} {;	#first exterior search !!! [lindex $ifloornodes $numInFile $i $j 1]
 	set maxX 0.0
