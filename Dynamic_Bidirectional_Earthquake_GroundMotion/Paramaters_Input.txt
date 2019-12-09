@@ -1,7 +1,7 @@
 #Input folder path:
-c:/Users/gw00161333/SEISMICITY/Bidirectional_Earthquake_GroundMotion/inputs/2Story_3Story_2Story_1Bay_1Bayz_CommonEdge_LShape_45CW
+c:/Users/gw00161333/SEISMICITY/Bidirectional_Earthquake_GroundMotion/inputs/bb_23_inputs
 #Output folder path:
-c:/Users/gw00161333/SEISMICITY/Bidirectional_Earthquake_GroundMotion/outputs/2Story_3Story_2Story_1Bay_1Bayz_CommonEdge_LShape_45CW
+c:/Users/gw00161333/SEISMICITY/Bidirectional_Earthquake_GroundMotion/outputs/bb_23_inputs
 #Acceleration recording in lateral direction:
 c:/Users/gw00161333/SEISMICITY/Bidirectional_Earthquake_GroundMotion/GMfiles/H-E12140.at2
 #Acceleration recording in perpendicular direction:
