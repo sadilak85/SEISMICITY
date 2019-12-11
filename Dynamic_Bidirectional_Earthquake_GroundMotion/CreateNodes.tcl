@@ -38,7 +38,7 @@ if [catch {open [lindex $ainputFilename $numInFile 0] r} inFileID] {
 			}
 		}
 	}
-	close $inFileID
+	close $inFileIDz
 
 # ------------------------  Boundary NODES ------------------------------------------------------
 # determine support nodes where ground motions are input, for multiple-support excitation

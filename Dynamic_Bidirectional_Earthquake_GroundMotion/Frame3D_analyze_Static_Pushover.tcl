@@ -67,8 +67,9 @@ if {$Buildingnum>1} {
 }
 #
 # Define DISPLAY -------------------------------------------------------------
-#DisplayModel3D DeformedShape ;	 # options: DeformedShape NodeNumbers ModeShape
-#
+if {[string match $displaymodel "True"] == 1} {
+	DisplayModel3D DeformedShape ;	 # options: DeformedShape NodeNumbers ModeShape
+}
 # ---------------------  GRAVITY LOADS  -----------------------------------------------------
 source Gravity.tcl
 #
@@ -123,6 +124,10 @@ pattern Plain 200 Linear {;
 
 # Define DISPLAY -------------------------------------------------------------
 # the deformed shape is defined in the build file
+if {[string match $displayrecorder "True"] == 1} {
+	recorder plot $Outdir/Disp_FreeNodes$_aBID.out DisplDOF[lindex $iGMdirection 0] 1100 10 400 400 -columns  1 [expr 1+[lindex $iGMdirection 0]] ; # a window to plot the nodal displacements versus time
+	recorder plot $Outdir/Disp_FreeNodes$_aBID.out DisplDOF[lindex $iGMdirection 1] 1100 410 400 400 -columns 1 [expr 1+[lindex $iGMdirection 1]] ; # a window to plot the nodal displacements versus time
+}
 #recorder plot $dataDir/DFree.out Displ-X 1200 10 300 300 -columns 2 1; # a window to plot the nodal displacements versus time
 #recorder plot $dataDir/DFree.out Displ-Z 1200 310 300 300 -columns 4 1; # a window to plot the nodal displacements versus time
 #  ---------------------------------    perform Static Pushover Analysis

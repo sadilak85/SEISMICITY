@@ -108,4 +108,84 @@ if [catch {open $filename r} inFileID] {
 close $inFileID
 }
 #
+# ######################################################################
+#
+set filename "ParamatersFEM_Input.txt"
+#
+set flag ""
+if [catch {open $filename r} inFileID] {
+    puts stderr "Cannot open input parameters file"
+} else {
+	foreach line [split [read $inFileID] \n] {
+        if {[llength $line] == 0} {
+        # Blank line --> do nothing
+			continue
+        } else {
+			if {[string match $line "#Display Model"] == 1} {
+				set flag "displaymodel"
+				continue
+			} elseif {[string match $line "#Display recorder plot"] == 1} {
+				set flag "displayrecorder"
+				continue
+			} elseif {[string match $line "#Pounding Type <zeroLengthImpact3D>  <zeroLengthContact3D>  <None>:"] == 1} {
+				set flag "poundingtype"
+				continue
+			} elseif {[string match $line "#Direction of normal of contact surface"] == 1} {
+				set flag "direction"
+				continue
+			} elseif {[string match $line "#Friction coefficient mu:"] == 1} {
+				set flag "mu"
+				continue
+			} elseif {[string match $line "#Penalty stiffness for tangential directions Kt:"] == 1} {
+				set flag "kt"
+				continue
+			} elseif {[string match $line "#Penalty stiffness for normal direction Kn:"] == 1} {
+				set flag "kn"
+				continue 
+			} elseif {[string match $line "#Cohesion:"] == 1} {
+				set flag "cohesion"
+				continue 
+			} elseif {[string match $line "#Initial gap:"] == 1} {
+				set flag "initialgap"
+				continue 
+			} elseif {[string match $line "#Friction ratio:"] == 1} {
+				set flag "frictionratio"
+				continue 
+			} elseif {[string match $line "#Yield displacement based on Hertz impact model:"] == 1} {
+				set flag "yielddisp"
+				continue 
+			} elseif {[string match $line "#Spring element (zeroLength) stiffness:"] == 1} {
+				set flag "stiffness"
+				continue 
+			} 
+			if {[string match $flag "displaymodel"] == 1} {
+				set displaymodel $line
+			} elseif {[string match $flag "displayrecorder"] == 1} {
+				set displayrecorder $line
+			} elseif {[string match $flag "poundingtype"] == 1} {
+				set poundingtype $line
+			} elseif {[string match $flag "direction"] == 1} {
+				set direction $line
+			} elseif {$flag == "mu"} {
+				set mu $line
+			} elseif {$flag == "kt"} {
+				set Kt $line
+			} elseif {$flag == "kn"} {
+				set Kn $line
+			} elseif {$flag == "cohesion"} {
+				set cohesion $line 
+			} elseif {$flag == "initialgap"} {
+				set initGap $line
+			} elseif {$flag == "frictionratio"} {
+				set frictionRatio $line
+			} elseif {$flag == "yielddisp"} {
+				set Delta_y $line
+			} elseif {$flag == "stiffness"} {
+				set stiffness $line
+			}	
+		}
+	}
+close $inFileID
+}
+#
 #
