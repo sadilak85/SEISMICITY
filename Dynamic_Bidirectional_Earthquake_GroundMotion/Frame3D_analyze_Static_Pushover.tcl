@@ -14,10 +14,10 @@ source AreaPolygon.tcl
 source subfolderSearch.tcl
 # ------------------  Define SECTIONS ------------------------------------------------------
 set SectionType FiberSection;		# options: Elastic FiberSection
-if {$RCSection=="True"} {
+if {$RCSection=="true"} {
 	source BuildRCrectSection.tcl;		# procedure for definining RC fiber section
 }
-if {$WSection=="True"} {
+if {$WSection=="true"} {
 	source Wsection.tcl; # procedure for definining steel W section
 }
 # ------------  SET UP -------------------------------------------------------------------------
@@ -44,12 +44,18 @@ set BeamSecTagFiber 5
 set GirdSecTagFiber 6
 set SecTagTorsion 70
 # ---------------------- Define SECTIONs --------------------------------
-if {$RCSection=="True"} {
+if {$RCSection=="true"} {
 	source RCrectSectionProperties.tcl
 }
-if {$WSection=="True"} {
+if {$WSection=="true"} {
 	source WSectionProperties.tcl
 }
+# ---------------------   READ INPUTS  ----------------------------------------------------------
+for {set numInFile 0} {$numInFile <= [expr $Buildingnum-1]} {incr numInFile 1} {
+	source AssemblefromNodes.tcl;					# Identify special lists from Nodal input, define output node lists, etc.
+	source AssemblefromElements.tcl;				# Beam/Girder tags, Transformation, vector definitions, etc.
+}
+source CreateNodes.tcl
 # ---------------------   CREATE THE MODEL  ----------------------------------------------------------
 for {set numInFile 0} {$numInFile <= [expr $Buildingnum-1]} {incr numInFile 1} {
 	source Frame3D_Build_RC.tcl ;  			#inputing many building parameters
@@ -61,15 +67,17 @@ for {set numInFile 0} {$numInFile <= [expr $Buildingnum-1]} {incr numInFile 1} {
 }
 source CreateIDFile.tcl
 source Recorder_outputs.tcl;	# OUTPUT RESULTS
+# -----------------	POUNDING -----------------
 if {$Buildingnum>1} {
 	source CreatePoundingNodesElements.tcl
 	source CreatePoundingCommands.tcl; # actually create Pounding Contacts
 }
 #
 # Define DISPLAY -------------------------------------------------------------
-if {[string match $displaymodel "True"] == 1} {
+if {[string match $displaymodel "true"] == 1} {
 	DisplayModel3D DeformedShape ;	 # options: DeformedShape NodeNumbers ModeShape
 }
+#
 # ---------------------  GRAVITY LOADS  -----------------------------------------------------
 source Gravity.tcl
 #
@@ -124,7 +132,7 @@ pattern Plain 200 Linear {;
 
 # Define DISPLAY -------------------------------------------------------------
 # the deformed shape is defined in the build file
-if {[string match $displayrecorder "True"] == 1} {
+if {[string match $displayrecorder "true"] == 1} {
 	recorder plot $Outdir/Disp_FreeNodes$_aBID.out DisplDOF[lindex $iGMdirection 0] 1100 10 400 400 -columns  1 [expr 1+[lindex $iGMdirection 0]] ; # a window to plot the nodal displacements versus time
 	recorder plot $Outdir/Disp_FreeNodes$_aBID.out DisplDOF[lindex $iGMdirection 1] 1100 410 400 400 -columns 1 [expr 1+[lindex $iGMdirection 1]] ; # a window to plot the nodal displacements versus time
 }

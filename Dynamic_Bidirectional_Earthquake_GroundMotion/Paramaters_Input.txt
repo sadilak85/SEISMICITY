@@ -1,17 +1,17 @@
 #Input folder path:
-c:/Users/gw00161333/SEISMICITY/Bidirectional_Earthquake_GroundMotion/inputs/2Story_3Story_2Story_1Bay_1Bayz_CommonEdge_LShape_45CW_nodeIDissue
+c:/Users/gw00161333/SEISMICITY/Bidirectional_Earthquake_GroundMotion/inputs/3Story_1Bay_1Bayz_irregularNOTorthogonal
 #Output folder path:
-c:/Users/gw00161333/SEISMICITY/Bidirectional_Earthquake_GroundMotion/outputs/2Story_3Story_2Story_1Bay_1Bayz_CommonEdge_LShape_45CW_nodeIDissue
-#Unit system <SI> <US>
+c:/Users/gw00161333/SEISMICITY/Bidirectional_Earthquake_GroundMotion/outputs/3Story_1Bay_1Bayz_irregularNOTorthogonal
+#Unit system <Metric> <US>
 US
 #Acceleration recording in lateral direction:
 c:/Users/gw00161333/SEISMICITY/Bidirectional_Earthquake_GroundMotion/GMfiles/H-E12140.at2
 #Acceleration recording in perpendicular direction:
 c:/Users/gw00161333/SEISMICITY/Bidirectional_Earthquake_GroundMotion/GMfiles/H-E01140.at2
-#Simulation type: <Dynamic> or <Static> Pushover:
+#Simulation type: <Dynamic> or <Static>:
 Dynamic
 #Maximum duration for <Dynamic> simulation in seconds:
-10
+1
 #Time step dt in seconds:
 0.01
 #Number of modes in Modal Analysis:
