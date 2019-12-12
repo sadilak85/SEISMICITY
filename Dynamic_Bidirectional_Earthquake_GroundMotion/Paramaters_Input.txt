@@ -3,7 +3,7 @@ c:/Users/gw00161333/SEISMICITY/Bidirectional_Earthquake_GroundMotion/inputs/3Sto
 #Output folder path:
 c:/Users/gw00161333/SEISMICITY/Bidirectional_Earthquake_GroundMotion/outputs/3Story_1Bay_1Bayz_irregularNOTorthogonal
 #Unit system <Metric> <US>
-metric
+us
 #Acceleration recording in lateral direction:
 c:/Users/gw00161333/SEISMICITY/Bidirectional_Earthquake_GroundMotion/GMfiles/H-E12140.at2
 #Acceleration recording in perpendicular direction:
