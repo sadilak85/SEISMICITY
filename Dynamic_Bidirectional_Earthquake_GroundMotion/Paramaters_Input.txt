@@ -11,7 +11,7 @@ c:/Users/gw00161333/SEISMICITY/Bidirectional_Earthquake_GroundMotion/GMfiles/H-E
 #Simulation type: <Dynamic> or <Static>:
 Dynamic
 #Maximum duration for <Dynamic> simulation in seconds:
-1
+10
 #Time step dt in seconds:
 0.01
 #Number of modes in Modal Analysis:

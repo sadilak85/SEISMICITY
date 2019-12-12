@@ -31,7 +31,7 @@ for {set numInFile 0} {$numInFile <= [expr $Buildingnum-1]} {incr numInFile 1} {
 	set SupportNodeFirst [lindex $iSupportNode $numInFile 0];						# ID: first support node
 	recorder Drift -file $dataDir/LateralDrift$_aBID.out -time -iNode $SupportNodeFirst  -jNode [lindex $FreeNodeID $numInFile 0] -dof 1 -perpDirn 2;	# lateral drift
 	#For displaying purpose:
-	recorder Node -file $dataDir/Disp_FreeNodes.out -time -node [lindex $FreeNodeID $numInFile 0] -dof 1 2 3 disp; # displacements of free node
+	recorder Node -file $dataDir/Disp_FreeNodes$_aBID.out -time -node [lindex $FreeNodeID $numInFile 0] -dof 1 2 3 disp; # displacements of free node
 }
 # -------------------------------  Node RESULTs ------------------------------------------
 	set infileNodeIDName [open $dataDir/NodeIDs.out r]

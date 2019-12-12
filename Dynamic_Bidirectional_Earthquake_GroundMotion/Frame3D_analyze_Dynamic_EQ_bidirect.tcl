@@ -113,8 +113,12 @@ analyze $NstepGravity;		# apply gravity
 loadConst -time 0.0
 # Plot displacements -------------------------------------------------------------
 if {[string match $displayrecorder "true"] == 1} {
-	recorder plot $Outdir/Disp_FreeNodes$_aBID.out DisplDOF[lindex $iGMdirection 0] 1100 10 400 400 -columns  1 [expr 1+[lindex $iGMdirection 0]] ; # a window to plot the nodal displacements versus time
-	recorder plot $Outdir/Disp_FreeNodes$_aBID.out DisplDOF[lindex $iGMdirection 1] 1100 410 400 400 -columns 1 [expr 1+[lindex $iGMdirection 1]] ; # a window to plot the nodal displacements versus time
+	for {set numInFile 0} {$numInFile <= [expr $Buildingnum-1]} {incr numInFile 1} {
+		set aBID [lindex $BID $numInFile 0]; # assign Building number
+		set _aBID "_Building_$aBID"
+		recorder plot $dataDir/Disp_FreeNodes$_aBID.out DisplDOF[lindex $iGMdirection 0] 1100 10 400 400 -columns  1 [expr 1+[lindex $iGMdirection 0]] ; # a window to plot the nodal displacements versus time
+		recorder plot $dataDir/Disp_FreeNodes$_aBID.out DisplDOF[lindex $iGMdirection 1] 1100 410 400 400 -columns 1 [expr 1+[lindex $iGMdirection 1]] ; # a window to plot the nodal displacements versus time
+	}	
 }
 #
 #
