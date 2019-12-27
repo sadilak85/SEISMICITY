@@ -28,7 +28,6 @@ set fc1U  $fc;			# UNCONFINED concrete (todeschini parabolic model), maximum str
 set eps1U -0.003;			# strain at maximum strength of unconfined concrete
 set fc2U [expr $Kres*$fc1U];		# ultimate stress
 set eps2U -0.01;			# strain at ultimate stress
-
 # tensile-strength properties
 set ftC [expr -0.14*$fc1C];		# tensile strength +tension
 set ftU [expr -0.14*$fc1U];		# tensile strength +tension
@@ -52,3 +51,16 @@ set cR2 0.15;			# control the transition from elastic to plastic branches
 
 set IDSteel 3
 uniaxialMaterial Steel02 $IDSteel  $Fy $Es $Bs $R0 $cR1 $cR2
+#
+# Output Material Properties
+#puts UltimateStressofUnconfConcrete:$fc2U
+#puts StrainatMaximumStrengthofUnconfinedConcrete:$eps1U
+#puts StrainatUltimateStressofUnconfinedConcrete:$eps2U
+#puts UltimateStressofConfConcrete:$fc2C
+#puts StrainatMaximumStressofConfinedConcrete:$eps1C
+#puts StrainatUltimateStressofConfinedConcrete:$eps2C
+#puts ConcreteCompressiveStrength:$fc
+#puts ConcreteElasticModulus:$Ec
+#puts SteelYieldStress:$Fy
+#puts SteelElasticModulus:$Es
+#

@@ -120,7 +120,6 @@ set Dincr [expr 0.01*$in];
 # Set up parameters that are particular to the model for displacement control
 set IDctrlDOF 1;					# degree of freedom of displacement read for displacement control
 
-
 # -- STATIC PUSHOVER/CYCLIC ANALYSIS
 # create load pattern for lateral pushover load coefficient when using linear load pattern
 # need to apply lateral load only to the master nodes of the rigid diaphragm at each floor

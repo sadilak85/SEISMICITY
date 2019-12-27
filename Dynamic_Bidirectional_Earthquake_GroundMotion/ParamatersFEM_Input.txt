@@ -1,5 +1,5 @@
 #Display Model
-false
+true
 #Display recorder plot
 false
 #Pounding Type <zeroLengthImpact3D>  <zeroLengthContact3D>  <None>:
