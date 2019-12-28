@@ -3,7 +3,7 @@
 
 set BCol $HCol
 
-set GammaConcrete [expr 150*$pcf];
+set GammaConcrete [expr 150*$pcf];  			# Typically, concrete has a density of 150 pounds per cubic foot,
 set QdlCol [expr $GammaConcrete*$HCol*$BCol];	# self weight of Column, weight per length
 set QBeam [expr $GammaConcrete*$HBeam*$BBeam];	# self weight of Beam, weight per length
 set QGird [expr $GammaConcrete*$HGird*$BGird];	# self weight of Gird, weight per length

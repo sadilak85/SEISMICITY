@@ -12,7 +12,7 @@ set GJ [expr $G*$J];
 # nominal concrete compressive strength
 set fc 		[expr -4.0*$ksi];		# CONCRETE Compressive Strength, ksi   (+Tension, -Compression)
 set Ec 		[expr 57*$ksi*sqrt(-$fc/$psi)];	# Concrete Elastic Modulus
-set nu 0.2;
+set nu 0.2;								# Poisson ratio
 set Gc [expr $Ec/2./[expr 1+$nu]];  	# Torsional stiffness Modulus
 
 # confined concrete
