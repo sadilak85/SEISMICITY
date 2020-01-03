@@ -39,7 +39,6 @@ set IDconcCore 1
 set IDconcCover 2
 uniaxialMaterial Concrete02 $IDconcCore $fc1C $eps1C $fc2C $eps2C $lambda $ftC $Ets;	# Core concrete (confined)
 uniaxialMaterial Concrete02 $IDconcCover $fc1U $eps1U $fc2U $eps2U $lambda $ftU $Ets;	# Cover concrete (unconfined)
-
 # -----------------------------------------------------------------------------------------------------# REINFORCING STEEL parameters
 #
 set Fy [expr 66.8*$ksi];		# STEEL yield stress
@@ -53,6 +52,10 @@ set IDSteel 3
 uniaxialMaterial Steel02 $IDSteel  $Fy $Es $Bs $R0 $cR1 $cR2
 #
 # Output Material Properties
+#puts ConfConreteTensileStrength:$ftC
+#puts UnConfConreteTensileStrength:$ftU
+#puts ConfconcreteMaximumStress:$fc1C
+#puts UnConfconcreteMaximumStress:$fc1U
 #puts UltimateStressofUnconfConcrete:$fc2U
 #puts StrainatMaximumStrengthofUnconfinedConcrete:$eps1U
 #puts StrainatUltimateStressofUnconfinedConcrete:$eps2U

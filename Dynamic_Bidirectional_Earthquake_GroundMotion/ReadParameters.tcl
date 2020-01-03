@@ -22,12 +22,18 @@ if [catch {open $filename r} inFileID] {
 			} elseif {[string match $line "#Unit system <Metric> <US>"] == 1} {
 				set flag "unitsystem"
 				continue
-			} elseif {[string match $line "#Acceleration recording in lateral direction:"] == 1} {
-				set flag "acceleration"
+			} elseif {[string match $line "#Acceleration recording in lateral direction 1:"] == 1} {
+				set flag "accelerationlat1"
+				continue
+			}  elseif {[string match $line "#Acceleration recording in lateral direction 2:"] == 1} {
+				set flag "accelerationlat2"
 				continue
 			} elseif {[string match $line "#Acceleration recording in perpendicular direction:"] == 1} {
 				set flag "accelerationper"
 				continue
+			} elseif {[string match $line "#Ground motion scaling factor:"] == 1} {
+				set flag "scalingfactor"
+				continue 
 			} elseif {[string match $line "#Simulation type: <Dynamic> or <Static>:"] == 1} {
 				set flag "typesim"
 				continue 
@@ -72,18 +78,19 @@ if [catch {open $filename r} inFileID] {
 			} elseif {[string match $flag "unitsystem"] == 1} {
 				set unitsystem $line
 				set unitsystem [string tolower $unitsystem]
-			} elseif {$flag == "acceleration"} {
-				set accfolder [lrange [file split $line] end-1 end-1]
-				set GMdir $accfolder;		# ground-motion file directory
+			} elseif {$flag == "accelerationlat1"} {
 				set acc1 [lrange [file split $line] end end]
-				set acc1 [split $acc1 "."];  # extract the filename without its extension
-				set acc1 [lindex $acc1 0]
-			} elseif {$flag == "accelerationper"} {
-			#set iGMfile "H-E01140 H-E12140" ;		# ground-motion filenames, should be different files
+				set acc1 [file rootname $acc1];  # extract the filename without its extension
+			}  elseif {$flag == "accelerationlat2"} {
 				set acc2 [lrange [file split $line] end end]
-				set acc2 [split $acc2 "."];  # extract the filename without its extension
-				set acc2 [lindex $acc2 0]
-				set iGMfile "$acc2 $acc1" ;		# ground-motion filenames, should be different files
+				set acc2 [file rootname $acc2];  # extract the filename without its extension
+			} elseif {$flag == "accelerationper"} {
+				set GMdir [file dirname $line]; # ground-motion file directory
+				set acc3 [lrange [file split $line] end end]
+				set acc3 [file rootname $acc3];  # extract the filename without its extension
+				set iGMfile "$acc1 $acc3 $acc2" ;		# ground-motion filenames, should be different files
+			} elseif {$flag == "scalingfactor"} {
+				set GMSF $line; # scaling factor for Ground motions depending on spectra
 			} elseif {$flag == "typesim"} {
 				set typesim $line; 		# Dynamic/Pushover etc.
 				set typesim [string tolower $typesim]

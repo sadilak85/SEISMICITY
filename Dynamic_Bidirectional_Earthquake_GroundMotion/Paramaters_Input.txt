@@ -1,17 +1,21 @@
 #Input folder path:
-c:/Users/gw00161333/SEISMICITY/Bidirectional_Earthquake_GroundMotion/inputs/b_693986615
+c:/Users/gw00161333/SEISMICITY/Bidirectional_Earthquake_GroundMotion/inputs/3Story_1Bay_1Bayz
 #Output folder path:
-c:/Users/gw00161333/SEISMICITY/Bidirectional_Earthquake_GroundMotion/outputs/b_693986615
+c:/Users/gw00161333/SEISMICITY/Bidirectional_Earthquake_GroundMotion/outputs/3Story_1Bay_1Bayz
 #Unit system <Metric> <US>
-metric
-#Acceleration recording in lateral direction:
-c:/Users/gw00161333/SEISMICITY/Bidirectional_Earthquake_GroundMotion/GMfiles/H-E12140.at2
+us
+#Acceleration recording in lateral direction 1:
+c:/Users/gw00161333/SEISMICITY/Bidirectional_Earthquake_GroundMotion/GMfiles/Cluster0/RSN14938_51177644_BKCVSHLE.AT2
+#Acceleration recording in lateral direction 2:
+c:/Users/gw00161333/SEISMICITY/Bidirectional_Earthquake_GroundMotion/GMfiles/Cluster0/RSN14938_51177644_BKCVSHLN.AT2
 #Acceleration recording in perpendicular direction:
-c:/Users/gw00161333/SEISMICITY/Bidirectional_Earthquake_GroundMotion/GMfiles/H-E01140.at2
+c:/Users/gw00161333/SEISMICITY/Bidirectional_Earthquake_GroundMotion/GMfiles/Cluster0/RSN14938_51177644_BKCVSHLZ.AT2
+#Ground motion scaling factor:
+4.7613
 #Simulation type: <Dynamic> or <Static>:
 dynamic
 #Maximum duration for <Dynamic> simulation in seconds:
-10
+30
 #Time step dt in seconds:
 0.01
 #Number of modes in Modal Analysis:

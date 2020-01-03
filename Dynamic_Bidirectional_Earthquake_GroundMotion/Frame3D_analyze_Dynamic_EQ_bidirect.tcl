@@ -24,8 +24,8 @@ if {$WSection=="true"} {
 	source Wsection.tcl; # procedure for definining steel W section
 }
 # Bidirectional Uniform Earthquake ground motion (uniform acceleration input at all support nodes)
-set iGMdirection "1 3";			# ground-motion direction
-set iGMfact "1.5 0.75";			# ground-motion scaling factor
+set iGMdirection "1 2 3";			# ground-motion direction
+set iGMfact "$GMSF $GMSF $GMSF";			# ground-motion scaling factor
 set dtInput 0.00500 ;		    # DT
 #
 # ------------  SET UP -------------------------------------------------------------------------
