@@ -2,7 +2,6 @@
 #	Read input parameters from the file
 #
 #
-set filename "Paramaters_Input.txt"
 #
 set flag ""
 if [catch {open $filename r} inFileID] {
@@ -13,19 +12,31 @@ if [catch {open $filename r} inFileID] {
         # Blank line --> do nothing
 			continue
         } else {
-			if {[string match $line "#Input folder path:"] == 1} {
+			if {[string match $line "#Tcl files directory:"] == 1} {
+				set flag "tclfilesdir"
+				continue
+			} elseif {[string match $line "#Input folder path:"] == 1} {
 				set flag "inputfolderpath"
 				continue
 			} elseif {[string match $line "#Output folder path:"] == 1} {
 				set flag "outputfolderpath"
 				continue
-			} elseif {[string match $line "#Acceleration recording in lateral direction:"] == 1} {
-				set flag "acceleration"
+			} elseif {[string match $line "#Unit system <Metric> <US>"] == 1} {
+				set flag "unitsystem"
+				continue
+			} elseif {[string match $line "#Acceleration recording in lateral direction 1:"] == 1} {
+				set flag "accelerationlat1"
+				continue
+			}  elseif {[string match $line "#Acceleration recording in lateral direction 2:"] == 1} {
+				set flag "accelerationlat2"
 				continue
 			} elseif {[string match $line "#Acceleration recording in perpendicular direction:"] == 1} {
 				set flag "accelerationper"
 				continue
-			} elseif {[string match $line "#Simulation type: <Dynamic> or <Static> Pushover:"] == 1} {
+			} elseif {[string match $line "#Ground motion scaling factor:"] == 1} {
+				set flag "scalingfactor"
+				continue 
+			} elseif {[string match $line "#Simulation type: <Dynamic> or <Static>:"] == 1} {
 				set flag "typesim"
 				continue 
 			} elseif {[string match $line "#Maximum duration for <Dynamic> simulation in seconds:"] == 1} {
@@ -62,24 +73,31 @@ if [catch {open $filename r} inFileID] {
 				set flag "LiveLoad"
 				continue 
 			}
-			if {[string match $flag "inputfolderpath"] == 1} {
+			if {[string match $flag "tclfilesdir"] == 1} {
+				set tclfilesdir $line
+			} elseif {[string match $flag "inputfolderpath"] == 1} {
 				set inputFilepath $line
 			} elseif {[string match $flag "outputfolderpath"] == 1} {
 				set outputFilepath $line
-			} elseif {$flag == "acceleration"} {
-				set accfolder [lrange [file split $line] end-1 end-1]
-				set GMdir $accfolder;		# ground-motion file directory
+			} elseif {[string match $flag "unitsystem"] == 1} {
+				set unitsystem $line
+				set unitsystem [string tolower $unitsystem]
+			} elseif {$flag == "accelerationlat1"} {
 				set acc1 [lrange [file split $line] end end]
-				set acc1 [split $acc1 "."];  # extract the filename without its extension
-				set acc1 [lindex $acc1 0]
-			} elseif {$flag == "accelerationper"} {
-			#set iGMfile "H-E01140 H-E12140" ;		# ground-motion filenames, should be different files
+				set acc1 [file rootname $acc1];  # extract the filename without its extension
+			}  elseif {$flag == "accelerationlat2"} {
 				set acc2 [lrange [file split $line] end end]
-				set acc2 [split $acc2 "."];  # extract the filename without its extension
-				set acc2 [lindex $acc2 0]
-				set iGMfile "$acc2 $acc1" ;		# ground-motion filenames, should be different files
+				set acc2 [file rootname $acc2];  # extract the filename without its extension
+			} elseif {$flag == "accelerationper"} {
+				set GMdir [file dirname $line]; # ground-motion file directory
+				set acc3 [lrange [file split $line] end end]
+				set acc3 [file rootname $acc3];  # extract the filename without its extension
+				set iGMfile "$acc1 $acc3 $acc2" ;		# ground-motion filenames, should be different files
+			} elseif {$flag == "scalingfactor"} {
+				set GMSF $line; # scaling factor for Ground motions depending on spectra
 			} elseif {$flag == "typesim"} {
 				set typesim $line; 		# Dynamic/Pushover etc.
+				set typesim [string tolower $typesim]
 			} elseif {$flag == "duration"} {
 				set TmaxAnalysis $line;	# maximum duration of ground-motion analysis 
 			} elseif {$flag == "timestep"} {
@@ -88,6 +106,7 @@ if [catch {open $filename r} inFileID] {
 				set numModes $line; # decide the number of Modes in total for Modal Analysis
 			} elseif {$flag == "RCSection"} {
 				set RCSection $line; # decide the number of Modes in total for Modal Analysis
+				set RCSection [string tolower $RCSection]
 			} elseif {$flag == "HCol"} {
 				set HCol $line
 			} elseif {$flag == "HBeam"} {
@@ -100,6 +119,7 @@ if [catch {open $filename r} inFileID] {
 				set BGird $line
 			} elseif {$flag == "WSection"} {
 				set WSection $line
+				set WSection [string tolower $WSection]
 			} elseif {$flag == "LiveLoad"} {
 				set LiveLoad $line
 			}	
@@ -110,7 +130,8 @@ close $inFileID
 #
 # ######################################################################
 #
-set filename "ParamatersFEM_Input.txt"
+set filename ""
+append filename $tclfilesdir "/ParamatersFEM_Input.txt"
 #
 set flag ""
 if [catch {open $filename r} inFileID] {
@@ -160,8 +181,10 @@ if [catch {open $filename r} inFileID] {
 			} 
 			if {[string match $flag "displaymodel"] == 1} {
 				set displaymodel $line
+				set displaymodel [string tolower $displaymodel]
 			} elseif {[string match $flag "displayrecorder"] == 1} {
 				set displayrecorder $line
+				set displayrecorder [string tolower $displayrecorder]
 			} elseif {[string match $flag "poundingtype"] == 1} {
 				set poundingtype $line
 			} elseif {[string match $flag "direction"] == 1} {
