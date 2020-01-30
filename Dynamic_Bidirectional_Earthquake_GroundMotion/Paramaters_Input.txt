@@ -1,9 +1,9 @@
 #Tcl files directory:
 c:/Users/gw00161333/SEISMICITY/Bidirectional_Earthquake_GroundMotion
 #Input folder path:
-c:/Users/gw00161333/SEISMICITY/Bidirectional_Earthquake_GroundMotion/inputs/3Story_1Bay_1Bayz
+c:/Users/gw00161333/SEISMICITY/Bidirectional_Earthquake_GroundMotion/inputs/bb_23_mp
 #Output folder path:
-c:/Users/gw00161333/SEISMICITY/Bidirectional_Earthquake_GroundMotion/outputs/3Story_1Bay_1Bayz
+c:/Users/gw00161333/SEISMICITY/Bidirectional_Earthquake_GroundMotion/outputs/bb_23_mp
 #Unit system <Metric> <US>
 us
 #Acceleration recording in lateral direction 1:
@@ -15,9 +15,9 @@ c:/Users/gw00161333/SEISMICITY/Bidirectional_Earthquake_GroundMotion/GMfiles/Clu
 #Ground motion scaling factor:
 4.7613
 #Simulation type: <Dynamic> or <Static>:
-dynamic
+Dynamic
 #Maximum duration for <Dynamic> simulation in seconds:
-30
+10.0
 #Time step dt in seconds:
 0.01
 #Number of modes in Modal Analysis:
@@ -25,16 +25,16 @@ dynamic
 #RC Section
 True
 #Square-Column section width in inches:
-18
+18.0
 #Beam depth -- perpendicular to bending axis in inches:
-24
+24.0
 #Beam width -- parallel to bending axis in inches:
-18
+18.0
 #Girder depth -- perpendicular to bending axis in inches:
-24
+24.0
 #Girder width -- parallel to bending axis in inches:
-18
+18.0
 #W Section
 False
 #Live Loads (uniformly distributed) on each floor (furniture, etc.) in psf (pounds per square foot):
-40
+40.0

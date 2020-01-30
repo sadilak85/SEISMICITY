@@ -171,11 +171,12 @@ if {$Buildingnum>1} {
 	append tclfile2source $tclfilesdir $tclfilename
 	source $tclfile2source
 	#
-	set tclfilename "/"
-	append tclfilename "CreatePoundingCommands.tcl"; # actually create Pounding Contacts
-	set tclfile2source ""
-	append tclfile2source $tclfilesdir $tclfilename
-	source $tclfile2source
+	#set tclfilename "/"
+	#append tclfilename "CreatePoundingCommands.tcl"; # actually create Pounding Contacts
+	#set tclfile2source ""
+	#append tclfile2source $tclfilesdir $tclfilename
+	#source $tclfile2source
+	source CreatePoundingCommands.tcl
 }
 #
 # Define DISPLAY -------------------------------------------------------------
