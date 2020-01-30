@@ -1,0 +1,40 @@
+#Tcl files directory:
+C:/PZI_16292/CAN/PersDev/EQ/05_QuickPipeline/00_AdressLevels_Master/3dCity_LOD1_rep/FEM_MiddleWare
+#Input folder path:
+C:/PZI_16292/CAN/PersDev/EQ/05_QuickPipeline/00_AdressLevels_Master/test/inputs/bb_23
+#Output folder path:
+C:/PZI_16292/CAN/PersDev/EQ/05_QuickPipeline/00_AdressLevels_Master/test/outputs/bb_23
+#Unit system <Metric> <US>
+us
+#Acceleration recording in lateral direction 1:
+C:/PZI_16292/CAN/PersDev/EQ/05_QuickPipeline/00_AdressLevels_Master/3dCity_LOD1_rep/FEM_MiddleWare/GMfiles/Cluster0/RSN14938_51177644_BKCVSHLE.AT2
+#Acceleration recording in lateral direction 2:
+C:/PZI_16292/CAN/PersDev/EQ/05_QuickPipeline/00_AdressLevels_Master/3dCity_LOD1_rep/FEM_MiddleWare/GMfiles/Cluster0/RSN14938_51177644_BKCVSHLN.AT2
+#Acceleration recording in perpendicular direction:
+C:/PZI_16292/CAN/PersDev/EQ/05_QuickPipeline/00_AdressLevels_Master/3dCity_LOD1_rep/FEM_MiddleWare/GMfiles/Cluster0/RSN14938_51177644_BKCVSHLZ.AT2
+#Ground motion scaling factor:
+4.7613
+#Simulation type: <Dynamic> or <Static>:
+Dynamic
+#Maximum duration for <Dynamic> simulation in seconds:
+10.0
+#Time step dt in seconds:
+0.01
+#Number of modes in Modal Analysis:
+3
+#RC Section
+True
+#Square-Column section width in inches:
+18.0
+#Beam depth -- perpendicular to bending axis in inches:
+24.0
+#Beam width -- parallel to bending axis in inches:
+18.0
+#Girder depth -- perpendicular to bending axis in inches:
+24.0
+#Girder width -- parallel to bending axis in inches:
+18.0
+#W Section
+False
+#Live Loads (uniformly distributed) on each floor (furniture, etc.) in psf (pounds per square foot):
+40.0
